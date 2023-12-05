@@ -1,18 +1,25 @@
-CREATE FUNCTION [dbo].[GetActual] (
-@Barcode AS NVARCHAR(50),
-@Month AS INT,
-@Year AS INT
+CREATE FUNCTION [dbo].[GetActual]
+(
+    @Barcode NVARCHAR(50),
+    @Month INT,
+    @Year INT
 )
-RETURNS float
+RETURNS FLOAT
 AS
 BEGIN
-DECLARE @CURRENT_MONTH INT
-DECLARE @Values AS FLOAT
-	SET @Values = (SELECT TOP 1 ActualInventory 
-	FROM dbo.Inventory 
-	WHERE Barcode = @Barcode 
-	AND @Month =  MONTH([Date])
-	AND  @Year =  YEAR([Date]) 
-	ORDER BY ID DESC)
-RETURN @Values
+    DECLARE @ActualInventory FLOAT;
+
+    -- Use a single query to get the actual inventory
+    SELECT TOP 1 @ActualInventory = ActualInventory
+    FROM dbo.Inventory
+    WHERE
+        Barcode = @Barcode
+        AND MONTH([Date]) = @Month
+        AND YEAR([Date]) = @Year
+    ORDER BY ID DESC;
+
+    -- If no value is found, set to 0
+    SET @ActualInventory = ISNULL(@ActualInventory, 0);
+
+    RETURN @ActualInventory;
 END
