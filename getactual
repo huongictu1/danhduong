@@ -1,0 +1,18 @@
+CREATE FUNCTION [dbo].[GetActual] (
+@Barcode AS NVARCHAR(50),
+@Month AS INT,
+@Year AS INT
+)
+RETURNS float
+AS
+BEGIN
+DECLARE @CURRENT_MONTH INT
+DECLARE @Values AS FLOAT
+	SET @Values = (SELECT TOP 1 ActualInventory 
+	FROM dbo.Inventory 
+	WHERE Barcode = @Barcode 
+	AND @Month =  MONTH([Date])
+	AND  @Year =  YEAR([Date]) 
+	ORDER BY ID DESC)
+RETURN @Values
+END
