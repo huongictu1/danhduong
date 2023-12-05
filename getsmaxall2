@@ -1,18 +1,21 @@
-CREATE FUNCTION [dbo].[GetSmaxALL2] (
-@Barcode AS NVARCHAR(50),
-@Month as int,
-@Year as int
+CREATE FUNCTION [dbo].[GetSmaxALL2]
+(
+    @Barcode NVARCHAR(50),
+    @Month INT,
+    @Year INT
 )
-RETURNS float
+RETURNS FLOAT
 AS
 BEGIN
-DECLARE @Values AS FLOAT
-SET @Values = (SELECT TOP 1 STT 
-FROM dbo.Inventory
-WHERE Barcode = @Barcode
-and MONTH(Date) <= @Month
-and YEAR(Date) = @Year
-ORDER BY ID DESC
-)
-RETURN @Values;
+    DECLARE @Values FLOAT;
+
+    -- Use a single query with MAX to get the maximum STT
+    SELECT @Values = ISNULL(MAX(STT), 0)
+    FROM dbo.Inventory
+    WHERE 
+        Barcode = @Barcode
+        AND MONTH([Date]) <= @Month
+        AND YEAR([Date]) = @Year;
+
+    RETURN @Values;
 END
