@@ -1,0 +1,19 @@
+CREATE FUNCTION [dbo].[SumOutput](
+@Barcode as nvarchar(50),
+@Month as int,
+@Year as int
+)
+RETURNS FLOAT
+AS
+BEGIN
+-- Functon return sum output chemical store allow barcode
+DECLARE @DATE_APPROVAL DATETIME = dbo.GetDateApproval(@Barcode, @Month, @Year)
+DECLARE @reValue as float;
+SET @reValue = (SELECT SUM(cs.OutputQuantity) FROM dbo.ChemicalStore cs
+				WHERE cs.Barcode = @Barcode 
+				AND MONTH(cs.DateCurent) =@Month and YEAR(cs.DateCurent) = @Year
+				);
+IF @reValue  IS NULL
+SET @reValue = 0;
+return @reValue;
+END
