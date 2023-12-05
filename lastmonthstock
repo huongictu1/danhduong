@@ -1,32 +1,30 @@
 CREATE FUNCTION [dbo].[LastMonthStock]
 (
- @Bacode nvarchar(50),
- @Month float,
- @Year float
+    @Barcode NVARCHAR(50),
+    @Month FLOAT,
+    @Year FLOAT
 )
-RETURNS float
+RETURNS FLOAT
 AS
 BEGIN
---Nếu tháng hiện tại là tháng 1, thì sẽ lấy tháng bằng 12 và năm trước
-DECLARE @Values as float;
-DECLARE @MaxID as int;
-DECLARE @YearCurrent as int;
-SET @YearCurrent =  @Year;
-if(@Month = 1) 
-BEGIN
-SET @YearCurrent = @YearCurrent - 1;
-SET @Month = 13;
-END
-DECLARE @DAY nvarchar(50) = DAY(EOMONTH(CAST(@Year as nvarchar(50)) + '-' + CAST(@Month - 1 as nvarchar(50)) + '-'+ '01'));
---Lấy ra lượng Actual tháng trước
-SET @Values =  
-(SELECT TOP 1 ActualInventory FROM (
-SELECT ActualInventory,Date  FROM dbo.Inventory 
-WHERE 
-Barcode = @Bacode
-AND convert(date, Date, 111) <= convert(date, @DAY + '-' + CAST(@Month - 1 as nvarchar(50)) + '-'+ CAST(@YearCurrent as nvarchar(50)), 105)
-) as T ORDER BY Date DESC)
+    DECLARE @LastMonthStock FLOAT;
 
-if(@Values is null) set @Values = 0; 
-RETURN @Values
+    -- If the current month is January, set the month to 12 and decrement the year
+    IF (@Month = 1) 
+    BEGIN
+        SET @Year = @Year - 1;
+        SET @Month = 12;
+    END
+
+    -- Calculate the last day of the previous month
+    DECLARE @LastDayOfPrevMonth DATE = DATEADD(DAY, -DAY(DATEADD(MONTH, 1, CAST(@Year AS NVARCHAR(50)) + '-' + CAST(@Month AS NVARCHAR(50)) + '-01')), CAST(@Year AS NVARCHAR(50)) + '-' + CAST(@Month AS NVARCHAR(50)) + '-01');
+
+    -- Calculate the last month stock using a single query
+    SELECT @LastMonthStock = ISNULL(MAX(ActualInventory), 0)
+    FROM dbo.Inventory
+    WHERE
+        Barcode = @Barcode
+        AND Date <= @LastDayOfPrevMonth;
+
+    RETURN @LastMonthStock;
 END
