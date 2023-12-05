@@ -1,0 +1,80 @@
+CREATE PROC [dbo].[Report2ALL](
+@Month as int,
+@Year as int,
+@Dept as int,
+@Stock as int
+)
+AS
+BEGIN
+
+select distinct ROW_NUMBER() Over(order by t.Barcode) as No,t.* from ((select
+c.ChemicalName,
+c.ProduceCode,
+d.Name as Dept,
+c.Barcode,
+c.ControlNo,
+u.Name as Unit,
+dbo.LastMonthStock(c.Barcode, @Month , @Year) as LastMonthStock,
+dbo.SumInput(c.Barcode, @Month , @Year) as TotalInput,
+dbo.SumOutput(c.Barcode, @Month , @Year) as TotalOutput,
+dbo.GetActual(c.Barcode, @Month , @Year) as ActualInventory ,
+dbo.MinIsZero((dbo.LastMonthStock(c.Barcode, @Month , @Year) + dbo.SumInput(c.Barcode, @Month , @Year)) - dbo.SumOutput(c.Barcode, @Month , @Year)) as CaculationStock,
+ROUND(dbo.GetActual(c.Barcode, @Month , @Year) - (dbo.LastMonthStock(c.Barcode, @Month , @Year) + dbo.SumInput(c.Barcode, @Month , @Year) - dbo.SumOutput(c.Barcode, @Month , @Year)), 3) as Differed,
+dbo.Get_Reason(c.Barcode, @Month , @Year) as Reason,
+dbo.GetSmaxALL2(c.Barcode, @Month , @Year) as STT,
+dbo.GetStatus(c.Barcode, @Month , @Year) as [Status],
+CONVERT(varchar, dbo.GetDateApproval(c.Barcode, @Month, @Year), 121)  as DateApproval,
+dbo.GetPICConfirm(c.Barcode, @Month , @Year) as Pic,
+d.ID,
+cs.StockID
+from [dbo].[ChemicalStore] c
+left JOIN ChemicalList cs ON c.Barcode = cs.Barcode
+left JOIN Dept d ON c.Dept = d.ID 
+left JOIN Unit u ON c.Unit = u.ID
+where MONTH(DateCurent) = @Month  and YEAR(DateCurent) = @Year
+group by c.Barcode, c.ChemicalName, c.ProduceCode, d.Name, c.ControlNo, u.Name,d.ID, cs.StockID
+having 
+d.ID = (CASE WHEN @Dept = -1 THEN d.ID ELSE @Dept END)
+and cs.StockID = (CASE WHEN @Stock = -1 THEN cs.StockID ELSE @Stock END) 
+)
+union
+(
+select 
+c.ChemicalName,
+c.ProduceCode,
+d.Name as Dept,
+c.Barcode,
+c.ControlNo,
+u.Name as Unit,
+dbo.LastMonthStock(c.Barcode, @Month , @Year) as LastMonthStock,
+TotalInput = 0,
+TotalOutput =0,
+dbo.GetActual(c.Barcode, @Month , @Year) as ActualInventory,
+dbo.LastMonthStock(c.Barcode, @Month , @Year) as CaculationStock,
+dbo.GetActual(c.Barcode, @Month , @Year) - dbo.LastMonthStock(c.Barcode, @Month , @Year) as Differed,
+dbo.Get_Reason(c.Barcode, @Month , @Year) as Reason,
+dbo.GetSmaxALL2(c.Barcode, @Month , @Year) as STT,
+dbo.GetStatus(c.Barcode, @Month , @Year) as [Status],
+CONVERT(varchar, dbo.GetDateApproval(c.Barcode, @Month, @Year), 121)  as DateApproval,
+dbo.GetPICConfirm(c.Barcode, @Month , @Year) as Pic,
+d.ID,
+cs.StockID
+from ChemicalList c 
+left JOIN ChemicalList cs ON c.Barcode = cs.Barcode
+LEFT JOIN Dept d ON c.Dept = d.ID 
+LEFT JOIN Unit u ON c.Unit = u.ID
+where c.Barcode not in (
+select Barcode from ChemicalStore where MONTH(DateCurent) = @Month  and YEAR(DateCurent) = @Year
+and (d.ID = (CASE WHEN @Dept = -1 THEN d.ID ELSE @Dept END)
+and cs.StockID = (CASE WHEN @Stock = -1 THEN cs.StockID ELSE @Stock END) 
+)
+)
+and dbo.LastMonthStock(c.Barcode, @Month , @Year) <> 0
+and d.ID = (CASE WHEN @Dept = -1 THEN d.ID ELSE @Dept END)
+and cs.StockID = (CASE WHEN @Stock = -1 THEN cs.StockID ELSE @Stock END) 
+)
+) as t
+
+END
+
+--END
