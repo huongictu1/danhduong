@@ -1,0 +1,46 @@
+xin chào.
+hôm nay tôi sẽ đại diện cho nhóm ứng dụng Tiên Sơn trình bày báo cáo cho năm 2023.
+nội dung của chúng tôi gồm các phần: giới thiệu, nhìn lại các dự án trong năm 2023, những khó khăn trong quá trình phát triển và cuối cùng là kế hoạch của năm 2024.
+nào bây giờ tôi sẽ bắt đầu,
+trong năm 2023, nhóm chúng tôi ổn định với 3 thành viên, phụ trách các công việc như bạn đang thấy trên màn hình.
+định hướng phát triển của chúng tôi vẫn theo nền tảng PostgreSQL, Angular, NetCore.
+và trong năm 2023, chúng tôi đã chuyển đổi thành công hệ thống Capital Budget.
+Việc chuyển đổi này cũng sẽ tiếp tục trong năm nay với hệ thống Uniform.
+
+phần tiếp theo, chúng tôi sẽ trình bày các dự án trong năm 2023.
+đầu tiên là dự án Capital Budget, đó là hệ thống cũ phát triển từ năm 2022 bởi thành viên nghỉ việc. đó là công nghệ cũ, gây ra sự khó khăn trong quá trình maintain và phát triển, vì vậy chúng tôi quyết định chuyển đổi nó sang NetCore và Angular. đồng thời tăng cường chức năng của hệ thống.
+Hệ thống hoàn thành vào tháng 5 năm 2023.
+Lợi ích của hệ thống này, chủ yếu giảm giờ làm với xấp xỉ 2077 giờ làm việc 1 năm.
+
+dự án tiếp theo, In-house asset control.
+đây là hệ thống quản lý tài sản in-house với mục tiêu ghi nhận thời gian làm việc hàng ngày, hữu hình hóa chi phí tài sản và hữu hình hóa cấu trúc tài sản.
+dự án này hoàn thành tháng 5 năm 2023, tăng cường chức năng vào tháng 11 cùng năm và hiện nay đã áp dụng tất cả các chức năng.
+về lợi ích của nó, đó là giảm tránh việc mất mát dữ liệu, tự động liên kết dữ liệu, tính toán và xuất tệp tin, giảm thời gian làm việc và giấy in.
+
+dự án thứ 3 liên quan đến phòng mua bán, hệ thống quản lý tài sản cho mượn.
+mục tiêu hệ thống là tối đa hóa hiệu suất công việc gián tiếp và phi giấy tờ hóa.
+ý tưởng của hệ thống này sẽ là lấy dữ liệu từ các hệ thống tài sản cố định, hệ thống quản lý Die, và người dùng upload dữ liệu. từ đó tạo nên quy trình hình thành tài sản mới.
+hệ thống này bắt đầu từ tháng 7 năm 2023 và hiện tại vẫn đang trong quá trình xử lý.
+lợi ích của hệ thống này, dựa trên request của phòng PUC, chúng tôi có thể liệt kê ra, đó là giảm man power 9 người trên 1 năm, xấp xỉ 600 giờ làm việc và 1 ngàn đô.
+
+hệ thống tiếp theo tôi muốn nói tới là hệ thống quản lý tài sản cố định,
+thực tế đây là hệ thống cũ, phát triển từ năm 2021 với các chức năng cơ bản như transfer, disposal, confirmation. trong năm 2023 chúng tôi tiếp tục tăng cường các chức năng khác như bạn thấy bên dưới đây.
+cho tới thời điểm hiện tại, nó đã áp dụng một vài chức năng mới và đang xử lý chức năng quản lý CIP.
+lợi ích của hệ thống này, ước tính khoảng 16 ngày làm việc mỗi tháng.
+
+dự án cuối cùng tôi muốn giới thiệu đó là hệ thống PSI, PSI viết tắt của production shipping inventory. với mục tiêu tự động làm kế hoạch sản xuất và tối thiểu hóa quản lý tồn kho. ý tưởng của hệ thống này sẽ là sưu tầm dữ liệu từ nhiều nguồn, tính toán và đưa đầu ra cho người dùng. cụ thể thì các đầu vào dữ liệu gồm NPIS/EUC, master data, hệ thống Receiving, và các hệ thống khác. đầu ra là master structure, forecast delivery volume, turn over day và lead time.
+dự án bắt đầu từ tháng 6, và cho tới tháng 9 đã áp dụng được 2 chức năng.
+cho tới hiện tại đã phát triển thêm 2 chức năng nữa và tiếp tục tiến hành kiểm thử.
+đó là 4 chức năng lớn, trong năm nay sẽ tiếp tục phát triển các chức năng còn lại và tiến hành mở rộng cho các nhà máy khác vào năm 2025.
+lợi ích của hệ thống này, đó là giảm tải workload, tăng cường chất lượng và giảm thiểu chi phí. chúng tôi nhận được phản hồi tích cực từ phòng ban.
+
+tiếp theo tôi sẽ nói về những khó khăn trong năm 2023,
+đó là sự thiếu sót kiến thức, dẫn tới việc thỉnh thoảng gây ra trouble.
+đó là thiếu nhân lực vì thỉnh thoảng có người nghỉ ốm.
+tuy vậy chúng tôi luôn cố gắng trau dồi kiến thức và sắp xếp công việc để đảm bảo dự án không chậm tiến độ.
+
+Mặc dù có những khó khăn nhất định, chúng tôi vẫn có vài thành tích trong năm 2023,
+đó là những giải thưởng bộ phận IT, giải thưởng các bộ phận khác, và một thành viên thăng chức.
+
+đó là bài báo cáo của tôi, cảm ơn các bạn đã lắng nghe.
+có ai có câu hỏi nào không ạ?
