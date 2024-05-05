@@ -1,0 +1,19 @@
+CREATE OR ALTER FUNCTION [dbo].[LastMonthStock]
+(
+    @Barcode NVARCHAR(50),
+    @Month INT,
+    @Year INT
+)
+RETURNS FLOAT
+AS
+BEGIN
+    DECLARE @LastMonthStock FLOAT;
+    DECLARE @FirstDayThisMonth DATE = DATEFROMPARTS(@Year, @Month, 1);
+    DECLARE @LastDayPrevMonth DATE = DATEADD(DAY, -1, @FirstDayThisMonth);
+
+    SELECT @LastMonthStock = ISNULL(MAX(ActualInventory), 0)
+    FROM dbo.Inventory
+    WHERE Barcode = @Barcode AND Date <= @LastDayPrevMonth;
+
+    RETURN @LastMonthStock;
+END;
