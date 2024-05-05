@@ -1,3 +1,10 @@
+-- Ví dụ về lệnh tạo chỉ mục cho cột Barcode và DateCurent trong bảng ChemicalStore
+CREATE INDEX idx_barcode_datecurent ON dbo.ChemicalStore(Barcode, DateCurent);
+
+-- Ví dụ về lệnh tạo chỉ mục cho cột Barcode và Date trong bảng Inventory
+CREATE INDEX idx_barcode_date ON dbo.Inventory(Barcode, Date);
+
+
 CREATE PROC [dbo].[Report2ALL]
 (
     @Month as int,
