@@ -1,0 +1,6 @@
+tạo nút Authorized by This PC
+sẽ connect tới view SSO,
+xem IP máy này đã đăng nhập SSO chưa,
+nếu có thì cho đăng nhập với User mà SSO đang xác thực
+
+điểm yếu: phụ thuộc vào SSO + user SSO đang đăng nhập trên máy tính này
