@@ -1,0 +1,77 @@
+using Hangfire;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
+using System.Net.Mail;
+
+namespace Message.Controllers
+{
+    [Route("api/[controller]")]
+    [ApiController]
+    public class EmailController : ControllerBase
+    {
+        private static string lastJobId = null;  // Lưu ID của job gửi email cuối cùng
+
+        [HttpPost("queue")]
+        public IActionResult SendEmail([FromBody] MailMessage message)
+        {
+            if (lastJobId == null)
+            {
+                lastJobId = BackgroundJob.Enqueue(() => SendEmailJob(message));
+            }
+            else
+            {
+                lastJobId = BackgroundJob.ContinueWith(lastJobId, () => SendEmailJob(message));
+            }
+
+            return Accepted();
+        }
+
+        private void SendEmailJob(MailMessage message)
+        {
+            using (var smtpClient = new SmtpClient("smtp.example.com"))
+            {
+                smtpClient.Send(message);
+            }
+
+            // Đợi 300 milliseconds trước khi gửi mail tiếp theo
+            System.Threading.Thread.Sleep(300);
+        }
+    }
+}
+
+using Hangfire;
+using Hangfire.MemoryStorage;
+
+var builder = WebApplication.CreateBuilder(args);
+
+// Add services to the container.
+
+builder.Services.AddControllers();
+// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
+builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddSwaggerGen();
+// Cấu hình Hangfire sử dụng MemoryStorage
+builder.Services.AddHangfire(configuration => configuration
+    .SetDataCompatibilityLevel(CompatibilityLevel.Version_170)
+    .UseSimpleAssemblyNameTypeSerializer()
+    .UseRecommendedSerializerSettings()
+    .UseMemoryStorage());
+
+builder.Services.AddHangfireServer();
+var app = builder.Build();
+
+// Configure the HTTP request pipeline.
+if (app.Environment.IsDevelopment())
+{
+    app.UseSwagger();
+    app.UseSwaggerUI();
+}
+#pragma warning disable CS0618 // Type or member is obsolete
+app.UseHangfireServer();
+#pragma warning restore CS0618 // Type or member is obsolete
+app.UseHangfireDashboard();
+app.UseAuthorization();
+
+app.MapControllers();
+
+app.Run();
