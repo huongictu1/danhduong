@@ -1,18 +1,78 @@
-warn: Ocelot.DownstreamRouteFinder.Middleware.DownstreamRouteFinderMiddleware[0]
-      requestId: 405cb91a-0002-e500-b63f-84710c7967bb, previousRequestId: No PreviousRequestId, message: 'DownstreamRouteFinderMiddleware setting pipeline errors. IDownstreamRouteFinder returned Error Code: UnableToFindDownstreamRouteError Message: Failed to match Route configuration for upstream path: /gate/background, verb: GET.'
-warn: Ocelot.Responder.Middleware.ResponderMiddleware[0]
-      requestId: 405cb91a-0002-e500-b63f-84710c7967bb, previousRequestId: No PreviousRequestId, message: 'Error Code: UnableToFindDownstreamRouteError Message: Failed to match Route configuration for upstream path: /gate/background, verb: GET. errors found in ResponderMiddleware. Setting error response for request path:/gate/background, request method: GET'
-warn: Ocelot.DownstreamRouteFinder.Middleware.DownstreamRouteFinderMiddleware[0]
-      requestId: 405cb91b-0002-e500-b63f-84710c7967bb, previousRequestId: No PreviousRequestId, message: 'DownstreamRouteFinderMiddleware setting pipeline errors. IDownstreamRouteFinder returned Error Code: UnableToFindDownstreamRouteError Message: Failed to match Route configuration for upstream path: /gate/background, verb: GET.'
-warn: Ocelot.Responder.Middleware.ResponderMiddleware[0]
-      requestId: 405cb91b-0002-e500-b63f-84710c7967bb, previousRequestId: No PreviousRequestId, message: 'Error Code: UnableToFindDownstreamRouteError Message: Failed to match Route configuration for upstream path: /gate/background, verb: GET. errors found in ResponderMiddleware. Setting error response for request path:/gate/background, request method: GET'
-warn: Ocelot.DownstreamRouteFinder.Middleware.DownstreamRouteFinderMiddleware[0]
-      requestId: 400100c8-0001-f500-b63f-84710c7967bb, previousRequestId: No PreviousRequestId, message: 'DownstreamRouteFinderMiddleware setting pipeline errors. IDownstreamRouteFinder returned Error Code: UnableToFindDownstreamRouteError Message: Failed to match Route configuration for upstream path: /gate/background/UserExportAction/Tod/LBP/4, verb: GET.'
-warn: Ocelot.Responder.Middleware.ResponderMiddleware[0]
-      requestId: 400100c8-0001-f500-b63f-84710c7967bb, previousRequestId: No PreviousRequestId, message: 'Error Code: UnableToFindDownstreamRouteError Message: Failed to match Route configuration for upstream path: /gate/background/UserExportAction/Tod/LBP/4, verb: GET. errors found in ResponderMiddleware. Setting error response for request path:/gate/background/UserExportAction/Tod/LBP/4, request method: GET'
-warn: Ocelot.DownstreamRouteFinder.Middleware.DownstreamRouteFinderMiddleware[0]
-      requestId: 400100c9-0001-f500-b63f-84710c7967bb, previousRequestId: No PreviousRequestId, message: 'DownstreamRouteFinderMiddleware setting pipeline errors. IDownstreamRouteFinder returned Error Code: UnableToFindDownstreamRouteError Message: Failed to match Route configuration for upstream path: /gate/background/UserExportAction/Tod/LBP/4, verb: GET.'
-warn: Ocelot.Responder.Middleware.ResponderMiddleware[0]
-      requestId: 400100c9-0001-f500-b63f-84710c7967bb, previousRequestId: No PreviousRequestId, message: 'Error Code: UnableToFindDownstreamRouteError Message: Failed to match Route configuration for upstream path: /gate/background/UserExportAction/Tod/LBP/4, verb: GET. errors found in ResponderMiddleware. Setting error response for request path:/gate/background/UserExportAction/Tod/LBP/4, request method: GET'
-warn: Ocelot.DownstreamRouteFinder.Middleware.DownstreamRouteFinderMiddleware[0]
-      requestId: 400100cb-0001-f500-b63f-84710c7967bb, previousRequestId: No PreviousRequestId, message: 'DownstreamRouteFinderMiddleware setting pipeline errors. IDownstreamRouteFinder returned Error Code: UnableToFindDownstreamRouteError Message: Failed to match Route co
+public interface IEmailService
+{
+    void Send(string from, string to, string subject, string html);
+}
+public class MailService
+{
+    const string SmtpHost = "mail.cvn.canon.co.jp";
+    const int SmtpPort = 25;
+    MailMessage mail;
+    public MailService(List<string> txtto, string txtsub, string txtcontent)
+    {
+        mail = _createMail2(txtto, txtsub, txtcontent);
+    }
+    private MailMessage _createMail2(List<string> txtto, string txtsub, string txtcontent)
+    {
+        MailMessage mailMsg = new MailMessage();
+        mailMsg.From = new MailAddress("cvn-contract@local.canon-vn.com.vn");
+        if (txtto == null || txtto.Count < 1)
+        {
+            mailMsg.To.Add("it-app26@local.canon-vn.com.vn");
+        }
+        else
+        {
+            foreach(var item in txtto)
+            {
+                if(string.IsNullOrEmpty(item) || item.Equals(""))
+                {
+                    continue;
+                }
+                mailMsg.To.Add(item);
+            }
+        }
+        mailMsg.Bcc.Add("it-app26@local.canon-vn.com.vn");
+        mailMsg.Subject = string.IsNullOrEmpty(txtsub) ? "No subject": txtsub;
+        mailMsg.IsBodyHtml = true;
+        mailMsg.Body = txtcontent;
+        mailMsg.Priority = MailPriority.High;
+        return mailMsg;
+    }
+    public bool Send()
+    {
+        try
+        {
+            if (string.IsNullOrEmpty(mail.Subject) || mail.Subject.Equals("") || mail.Subject.Equals("No subject"))
+            {
+                return false;
+            }
+            var client = new SmtpClient()
+            {
+                Host = SmtpHost,
+                Port = SmtpPort,
+                DeliveryMethod = SmtpDeliveryMethod.Network,
+                UseDefaultCredentials = false
+            };
+            client.SendCompleted += SendCompletedCallback;
+            client.SendMailAsync(mail);
+            return true;
+        }
+        catch { }
+        return false;
+    }
+    private void SendCompletedCallback(object sender, AsyncCompletedEventArgs e)
+    {
+        if (e.Cancelled)
+        {
+            Console.WriteLine("Send email cancelled");
+        }
+        if (e.Error != null)
+        {
+            Console.WriteLine("Error when send email: " + e.Error.Message);
+        }
+        else
+        {
+            Console.WriteLine("Send email successful !");
+        }
+        ((SmtpClient)sender).Dispose();
+    }
+}
