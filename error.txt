@@ -76,3 +76,52 @@ public class MailService
         ((SmtpClient)sender).Dispose();
     }
 }
+public class MailService
+{
+    private static SmtpClient _client;
+    private static BlockingCollection<MailMessage> _mailQueue = new BlockingCollection<MailMessage>();
+
+    public MailService(string host, int port)
+    {
+        _client = new SmtpClient(host, port)
+        {
+            DeliveryMethod = SmtpDeliveryMethod.Network,
+            UseDefaultCredentials = false
+        };
+
+        // Bắt đầu xử lý hàng đợi
+        Task.Run(() => ProcessQueue());
+    }
+
+    private void ProcessQueue()
+    {
+        foreach (var mail in _mailQueue.GetConsumingEnumerable())
+        {
+            SendMail(mail);
+        }
+    }
+
+    private void SendMail(MailMessage mail)
+    {
+        try
+        {
+            _client.Send(mail);
+            Console.WriteLine("Email sent successfully to " + string.Join(", ", mail.To));
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine("Failed to send email: " + e.Message);
+        }
+    }
+
+    public void QueueMail(MailMessage mail)
+    {
+        _mailQueue.Add(mail);
+    }
+
+    public static void Dispose()
+    {
+        _client.Dispose();
+        _mailQueue.CompleteAdding();
+    }
+}
