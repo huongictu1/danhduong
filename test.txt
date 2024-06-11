@@ -1,0 +1,121 @@
+Để xác định các session đang chiếm nhiều tài nguyên và có thể gây treo cơ sở dữ liệu PostgreSQL, bạn có thể sử dụng các truy vấn SQL để kiểm tra các session hiện tại và xem xét các thông tin về tài nguyên mà chúng sử dụng. Dưới đây là các bước cụ thể bạn có thể thực hiện:
+
+1. **Kết nối tới PostgreSQL**:
+   Trước tiên, bạn cần kết nối tới PostgreSQL bằng công cụ như `psql` hoặc bất kỳ giao diện quản lý PostgreSQL nào bạn đang sử dụng.
+
+2. **Truy vấn các session hiện tại**:
+   Sử dụng truy vấn sau để lấy thông tin về các session hiện tại và các tài nguyên mà chúng đang sử dụng:
+
+```sql
+SELECT
+    pid,
+    usename,
+    application_name,
+    client_addr,
+    backend_start,
+    state,
+    wait_event_type,
+    wait_event,
+    query,
+    age(clock_timestamp(), query_start) AS query_duration,
+    state_change,
+    pg_stat_activity.*
+FROM
+    pg_stat_activity
+ORDER BY
+    query_duration DESC;
+```
+
+Truy vấn này sẽ liệt kê tất cả các session đang hoạt động, sắp xếp theo thời gian thực thi của truy vấn từ lâu nhất tới gần nhất.
+
+3. **Kiểm tra các session sử dụng nhiều tài nguyên CPU**:
+   Nếu bạn có các extension như `pg_stat_statements` được cài đặt, bạn có thể sử dụng nó để lấy thông tin về các truy vấn tiêu tốn nhiều CPU:
+
+```sql
+SELECT
+    userid::regrole AS user,
+    dbid::regdatabase AS db,
+    query,
+    calls,
+    total_time,
+    rows,
+    100 * total_time / sum(total_time) OVER () AS pct_cpu
+FROM
+    pg_stat_statements
+ORDER BY
+    total_time DESC
+LIMIT 10;
+```
+
+Truy vấn này sẽ cho bạn biết các truy vấn nào đang sử dụng nhiều CPU nhất.
+
+4. **Kiểm tra các session sử dụng nhiều bộ nhớ**:
+   Bạn có thể sử dụng hệ thống view `pg_stat_activity` kết hợp với các thông tin từ hệ điều hành để xác định các session tiêu tốn nhiều bộ nhớ:
+
+```sql
+SELECT
+    pid,
+    usename,
+    application_name,
+    client_addr,
+    backend_start,
+    state,
+    wait_event_type,
+    wait_event,
+    query,
+    age(clock_timestamp(), query_start) AS query_duration,
+    state_change,
+    pg_backend_memory_contexts.*
+FROM
+    pg_stat_activity
+JOIN
+    pg_backend_memory_contexts
+ON
+    pg_stat_activity.pid = pg_backend_memory_contexts.pid
+ORDER BY
+    pg_backend_memory_contexts.total_bytes DESC;
+```
+
+5. **Kiểm tra tình trạng khóa (locks)**:
+   Các session có thể bị treo do đang đợi các khóa. Bạn có thể kiểm tra tình trạng khóa bằng truy vấn sau:
+
+```sql
+SELECT
+    pid,
+    usename,
+    application_name,
+    client_addr,
+    backend_start,
+    state,
+    wait_event_type,
+    wait_event,
+    query,
+    age(clock_timestamp(), query_start) AS query_duration,
+    state_change,
+    locktype,
+    mode,
+    granted
+FROM
+    pg_stat_activity
+JOIN
+    pg_locks
+ON
+    pg_stat_activity.pid = pg_locks.pid
+WHERE
+    NOT granted
+ORDER BY
+    query_duration DESC;
+```
+
+6. **Dừng các session gây vấn đề**:
+   Nếu bạn xác định được các session cụ thể gây ra vấn đề, bạn có thể dừng chúng bằng lệnh sau (cẩn thận khi sử dụng lệnh này, chỉ nên dùng khi chắc chắn):
+
+```sql
+SELECT pg_terminate_backend(pid)
+FROM pg_stat_activity
+WHERE pid = <pid_cần_dừng>;
+```
+
+Thay `<pid_cần_dừng>` bằng PID của session bạn muốn dừng.
+
+Những bước trên sẽ giúp bạn xác định và quản lý các session đang tiêu tốn nhiều tài nguyên, từ đó tránh được tình trạng treo cơ sở dữ liệu.
