@@ -1,0 +1,31 @@
+abc
+CREATE OR REPLACE FUNCTION sync_data()
+RETURNS void AS $$
+DECLARE
+    record RECORD;
+    table_name TEXT;
+    table_columns TEXT;
+BEGIN
+    FOR record IN 
+        SELECT table_name 
+        FROM information_schema.tables 
+        WHERE table_schema = 'public' AND table_type = 'BASE TABLE'
+    LOOP
+        table_name := record.table_name;
+
+        -- Fetch column names
+        SELECT string_agg(column_name, ', ') 
+        INTO table_columns 
+        FROM information_schema.columns 
+        WHERE table_schema = 'public' AND table_name = table_name;
+
+        EXECUTE format(
+            'INSERT INTO public.%I (%s)
+             SELECT %s
+             FROM dblink(''ts_psi_server'', ''SELECT %s FROM %I'') 
+             AS data(%s);',
+            table_name, table_columns, table_columns, table_columns, table_name, table_columns
+        );
+    END LOOP;
+END;
+$$ LANGUAGE plpgsql;
