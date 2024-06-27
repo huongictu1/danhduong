@@ -4,3 +4,83 @@ tôi có 1 số nguyên đặt tên là ignore.
 tôi có 1 array time only (arrB), tôi muốn tìm từng giá trị của nó ở vị trí nào trong arrA và lớn hơn vị trí ignore.
 tôi có 1 array time only (arrC) độ dài mảng giống arrB, tôi muốn tìm từng giá trị của nó ở vị trí nào trong arrA và lớn hơn vị trí ignore và nhỏ hơn gần nhất với giá trị từng phần tử tương ứng arrB.  
 hãy giúp tôi
+using System;
+using System.Collections.Generic;
+using System.Linq;
+
+public class Program
+{
+    public static void Main()
+    {
+        DateTime startTime = new DateTime(2021, 6, 1, 8, 0, 0);
+        List<DateTime> arrA = new List<DateTime>();
+        for (int i = 0; i < 660; i++)
+        {
+            arrA.Add(startTime.AddMinutes(i * 10));
+        }
+
+        int ignore = 100; // Giả sử giá trị ignore là 100
+        List<TimeOnly> arrB = new List<TimeOnly>
+        {
+            new TimeOnly(8, 0),
+            new TimeOnly(12, 30),
+            new TimeOnly(21, 0)
+        };
+        List<TimeOnly> arrC = new List<TimeOnly>
+        {
+            new TimeOnly(9, 0),
+            new TimeOnly(13, 0),
+            new TimeOnly(22, 0)
+        };
+
+        var resultB = FindPositions(arrA, arrB, ignore);
+        var resultC = FindPositionsWithCondition(arrA, arrB, arrC, ignore);
+
+        Console.WriteLine("Positions for arrB:");
+        foreach (var pos in resultB)
+        {
+            Console.WriteLine(pos);
+        }
+
+        Console.WriteLine("\nPositions for arrC:");
+        foreach (var pos in resultC)
+        {
+            Console.WriteLine(pos);
+        }
+    }
+
+    public static List<int> FindPositions(List<DateTime> arrA, List<TimeOnly> arrB, int ignore)
+    {
+        List<int> positions = new List<int>();
+
+        foreach (var time in arrB)
+        {
+            var pos = arrA.FindIndex(ignore, dt => new TimeOnly(dt.Hour, dt.Minute) == time);
+            positions.Add(pos);
+        }
+
+        return positions;
+    }
+
+    public static List<int> FindPositionsWithCondition(List<DateTime> arrA, List<TimeOnly> arrB, List<TimeOnly> arrC, int ignore)
+    {
+        List<int> positions = new List<int>();
+
+        for (int i = 0; i < arrB.Count; i++)
+        {
+            var timeB = arrB[i];
+            var timeC = arrC[i];
+            var posB = arrA.FindIndex(ignore, dt => new TimeOnly(dt.Hour, dt.Minute) == timeB);
+            if (posB == -1)
+            {
+                positions.Add(-1);
+                continue;
+            }
+
+            var posC = arrA.FindIndex(ignore, dt => new TimeOnly(dt.Hour, dt.Minute) < timeC && new TimeOnly(dt.Hour, dt.Minute) > timeB);
+            positions.Add(posC);
+        }
+
+        return positions;
+    }
+}
