@@ -1,5 +1,80 @@
 trong c# net 6 api,
-tôi có 1 list object gồm các trường được định nghĩa như sau: cột shift (có giá trị D hoặc N), cột eta có 4 ký tự chữ (tương đương với time format HHmm), cột row_num (có giá trị tăng dần từ 1, 2, 3..).
+tôi có 1 list object gồm các trường được định nghĩa như sau: cột shift (có giá trị D hoặc N), cột eta có 4 ký tự chữ (tương đương với time format HHmm), cột row_num (có giá trị tăng dần từ 1, 2, 3..).using System;
+using System.Collections.Generic;
+using System.Linq;
+
+public class OriginalObject
+{
+    public string Shift { get; set; } // D or N
+    public string Eta { get; set; } // HHmm
+    public int RowNum { get; set; }
+}
+
+public class CustomObject
+{
+    public string ShiftN { get; set; }
+    public string EtaN { get; set; }
+    public int RowNumN { get; set; }
+    public string ShiftD { get; set; }
+    public string EtaD { get; set; }
+    public int RowNumD { get; set; }
+}
+
+public class Program
+{
+    public static List<CustomObject> MatchShifts(List<OriginalObject> originalList)
+    {
+        var shiftDList = originalList.Where(x => x.Shift == "D").OrderBy(x => x.RowNum).ToList();
+        var shiftNList = originalList.Where(x => x.Shift == "N").OrderBy(x => x.RowNum).ToList();
+
+        List<CustomObject> customList = new List<CustomObject>();
+
+        foreach (var shiftN in shiftNList)
+        {
+            var matchingShiftD = shiftDList.FirstOrDefault(x => x.RowNum == shiftN.RowNum);
+
+            if (matchingShiftD == null)
+            {
+                matchingShiftD = shiftDList.LastOrDefault();
+            }
+            else if (int.Parse(matchingShiftD.Eta) > 1300)
+            {
+                matchingShiftD = shiftDList.LastOrDefault(x => int.Parse(x.Eta) < 1300);
+            }
+
+            customList.Add(new CustomObject
+            {
+                ShiftN = shiftN.Shift,
+                EtaN = shiftN.Eta,
+                RowNumN = shiftN.RowNum,
+                ShiftD = matchingShiftD?.Shift,
+                EtaD = matchingShiftD?.Eta,
+                RowNumD = matchingShiftD?.RowNum ?? -1 // Use -1 if no matching Shift D is found
+            });
+        }
+
+        return customList;
+    }
+
+    public static void Main()
+    {
+        List<OriginalObject> originalList = new List<OriginalObject>
+        {
+            new OriginalObject { Shift = "D", Eta = "1200", RowNum = 1 },
+            new OriginalObject { Shift = "D", Eta = "1400", RowNum = 2 },
+            new OriginalObject { Shift = "N", Eta = "1300", RowNum = 1 },
+            new OriginalObject { Shift = "N", Eta = "1500", RowNum = 2 },
+            new OriginalObject { Shift = "N", Eta = "1600", RowNum = 3 },
+        };
+
+        var result = MatchShifts(originalList);
+
+        foreach (var item in result)
+        {
+            Console.WriteLine($"ShiftN: {item.ShiftN}, EtaN: {item.EtaN}, RowNumN: {item.RowNumN}, ShiftD: {item.ShiftD}, EtaD: {item.EtaD}, RowNumD: {item.RowNumD}");
+        }
+    }
+}
 tôi muốn tạo ra 1 object, có thể custome (thêm cột) so với object bên trên, xác định thông tin như bên dưới:
 rule như sau: row_num = 1 của shift N thì gắn với row_num = 1 của shift D,
 row_num = 2 của shift N thì gắn với row_num = 2 của shift D,
