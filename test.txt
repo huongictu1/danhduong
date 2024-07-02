@@ -1,4 +1,24 @@
 trong c# net 6 api, tôi có 1 array date time (arrA), trong đó là các giá trị datetime liên tiếp nhau, mỗi giá trị cách nhau 10 phút, ví dụ 2021-06-01 08:00, 2021-06-01 08:10, 2021-06-01 08:20,
+function populateData(data) {
+    var container = $('#data-container');
+    container.empty(); // Xóa nội dung cũ
+
+    data.forEach(item => {
+        var htmlString = `
+            <div>
+                <a href="${item.linkField}">Link</a>
+                <div>${item.htmlField}</div>
+                <p>${item.otherField1}</p>
+                <p>${item.otherField2}</p>
+                <p>${item.otherField3}</p>
+                <p>${item.otherField4}</p>
+            </div>
+        `;
+        container.append(htmlString);
+    });
+}
+<div id="data-container"></div>
+
 array đó có độ dài 660 (bắt đầu từ 8h sáng tới 17h và từ 21h tới 6h sáng hôm sau) tương đương 6 ngày.
 tôi có 1 số nguyên đặt tên là ignore.
 tôi có 1 array time only (arrB), tôi muốn tìm từng giá trị của nó ở vị trí nào trong arrA và lớn hơn vị trí ignore.
