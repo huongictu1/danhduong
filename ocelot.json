@@ -28,3 +28,90 @@
     "BaseUrl": "https://localhost:5000"
   }
 }
+# PostgreSQL connection parameters
+$host = "localhost"
+$port = "5432"
+$username = "your_username"
+$password = "your_password"
+$database = "your_database"
+
+# Query to check for session locks
+$query = @"
+SELECT pid, usename, query_start, state
+FROM pg_stat_activity
+WHERE state = 'idle in transaction'
+"@
+
+# Function to send email
+function Send-Email {
+    param(
+        [string]$to,
+        [string]$subject,
+        [string]$body
+    )
+
+    # Email parameters
+    $smtpServer = "your_smtp_server"
+    $smtpPort = 587
+    $smtpUsername = "your_smtp_username"
+    $smtpPassword = "your_smtp_password"
+
+    # Create mail message
+    $message = New-Object System.Net.Mail.MailMessage
+    $message.From = "your_sender_email"
+    $message.To.Add($to)
+    $message.Subject = $subject
+    $message.Body = $body
+
+    # Setup SMTP client
+    $smtp = New-Object System.Net.Mail.SmtpClient($smtpServer, $smtpPort)
+    $smtp.EnableSSL = $true
+    $smtp.Credentials = New-Object System.Net.NetworkCredential($smtpUsername, $smtpPassword)
+
+    # Send email
+    $smtp.Send($message)
+}
+
+try {
+    # Connect to PostgreSQL and execute query
+    $connString = "Server=$host;Port=$port;User Id=$username;Password=$password;Database=$database;"
+    $connection = New-Object Npgsql.NpgsqlConnection($connString)
+    $connection.Open()
+
+    $command = $connection.CreateCommand()
+    $command.CommandText = $query
+    $reader = $command.ExecuteReader()
+
+    # Check if there are any locks
+    if ($reader.HasRows) {
+        while ($reader.Read()) {
+            $pid = $reader.GetInt32(0)
+            $username = $reader.GetString(1)
+            $query_start = $reader.GetDateTime(2)
+            $state = $reader.GetString(3)
+
+            # Log or handle the lock details
+            Write-Output "Found session lock: PID=$pid, User=$username, Query Start=$query_start, State=$state"
+
+            # Example: Send email notification
+            $to = "recipient@example.com"
+            $subject = "PostgreSQL Session Lock Detected"
+            $body = "Session lock detected in PostgreSQL. PID: $pid, User: $username, Query Start: $query_start, State: $state"
+            Send-Email -to $to -subject $subject -body $body
+        }
+    } else {
+        Write-Output "No session locks found."
+    }
+
+    $reader.Close()
+    $connection.Close()
+}
+catch {
+    Write-Output "Error: $_.Exception.Message"
+    exit 1
+}
+finally {
+    if ($connection.State -eq 'Open') {
+        $connection.Close()
+    }
+}
