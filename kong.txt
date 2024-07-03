@@ -1,0 +1,12 @@
+[root@CTS-VIPRO2 ~]# sudo yum install -y kong-3.7.0.rpm
+Updating Subscription Management repositories.
+Warning: failed loading '/etc/yum.repos.d/media.repo', skipping.
+Red Hat Enterprise Linux 8 for x86_64 - BaseOS (RPMs)                                                                                                                                                        0.0  B/s |   0  B     00:00
+Errors during downloading metadata for repository 'rhel-8-for-x86_64-baseos-rpms':
+  - Curl error (6): Couldn't resolve host name for https://cdn.redhat.com/content/dist/rhel8/8/x86_64/baseos/os/repodata/repomd.xml [Could not resolve host: cdn.redhat.com]
+Error: Failed to download metadata for repo 'rhel-8-for-x86_64-baseos-rpms': Cannot download repomd.xml: Cannot download repodata/repomd.xml: All mirrors were tried
+[root@CTS-VIPRO2 ~]# rpm -iv kong-3.7.0.rpm
+warning: kong-3.7.0.rpm: Header V4 RSA/SHA256 Signature, key ID eb9e8e18: NOKEY
+error: Failed dependencies:
+        perl is needed by kong-0:3.7.0-1.x86_64
+        perl-Time-HiRes is needed by kong-0:3.7.0-1.x86_64
