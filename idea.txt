@@ -2,6 +2,39 @@ tạo nút Authorized by This PC
 sẽ connect tới view SSO,
 xem IP máy này đã đăng nhập SSO chưa,
 nếu có thì cho đăng nhập với User mà SSO đang xác thực
+var categoryPhase = "value1"; // Giá trị cho trường category
+var contentPhase = "value2"; // Giá trị cho trường content
+
+var result1 = await _elasticClient.SearchAsync<GlobalSearch>(s => s
+    .Index("cvn-search")
+    .Query(q => q
+        .Bool(b => b
+            .Must(m => m
+                .QueryString(qs => qs
+                    .Query($"*{categoryPhase}*")
+                    .AnalyzeWildcard(true)
+                    .DefaultOperator(Operator.And)
+                    .Field(f => f.Category)
+                ),
+                m => m
+                .QueryString(qs => qs
+                    .Query($"*{contentPhase}*")
+                    .AnalyzeWildcard(true)
+                    .DefaultOperator(Operator.And)
+                    .Field(f => f.Content)
+                )
+            )
+        )
+    )
+    .Size(20)
+    .Highlight(h => h
+        .PreTags("<em class=\"marker\">")
+        .PostTags("</em>")
+        .Fields(f => f
+            .Field(ff => ff.Content)
+        )
+    )
+);
 
 điểm yếu: phụ thuộc vào SSO + user SSO đang đăng nhập trên máy tính này
 
