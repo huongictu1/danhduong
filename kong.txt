@@ -1,3 +1,83 @@
+using System;
+using System.IO;
+using System.Diagnostics;
+using Npgsql;
+
+class Program
+{
+    static void Main(string[] args)
+    {
+        string foreignHost = "foreign_host";
+        string foreignDatabase = "foreign_database";
+        string localHost = "local_host";
+        string localDatabase = "local_database";
+        string username = "username";
+        string password = "password";
+
+        // Chuỗi kết nối đến database
+        string connString = $"Host={localHost};Username={username};Password={password};Database={localDatabase}";
+
+        using (var conn = new NpgsqlConnection(connString))
+        {
+            conn.Open();
+
+            // Lấy danh sách các bảng bị thiếu từ view
+            string query = "SELECT table_name FROM public.v_missing_tables";
+            using (var cmd = new NpgsqlCommand(query, conn))
+            using (var reader = cmd.ExecuteReader())
+            {
+                while (reader.Read())
+                {
+                    string tableName = reader.GetString(0);
+                    Console.WriteLine($"Processing table: {tableName}");
+
+                    // Export DDL từ foreign database
+                    string exportFile = $"{tableName}.sql";
+                    string exportCmd = $"pg_dump -h {foreignHost} -U {username} -s -t {tableName} {foreignDatabase} -f {exportFile}";
+
+                    ExecuteCommand(exportCmd);
+
+                    // Import DDL vào database hiện tại
+                    string importCmd = $"psql -h {localHost} -U {username} -d {localDatabase} -f {exportFile}";
+
+                    ExecuteCommand(importCmd);
+                }
+            }
+        }
+    }
+
+    static void ExecuteCommand(string command)
+    {
+        var processInfo = new ProcessStartInfo("cmd.exe", "/c " + command)
+        {
+            RedirectStandardError = true,
+            RedirectStandardOutput = true,
+            UseShellExecute = false,
+            CreateNoWindow = true
+        };
+
+        var process = new Process
+        {
+            StartInfo = processInfo
+        };
+
+        process.Start();
+        process.WaitForExit();
+
+        string output = process.StandardOutput.ReadToEnd();
+        string error = process.StandardError.ReadToEnd();
+
+        if (!string.IsNullOrEmpty(output))
+        {
+            Console.WriteLine(output);
+        }
+
+        if (!string.IsNullOrEmpty(error))
+        {
+            Console.WriteLine(error);
+        }
+    }
+}
 [root@CTS-VIPRO2 ~]# sudo yum install -y kong-3.7.0.rpm
 Updating Subscription Management repositories.
 Warning: failed loading '/etc/yum.repos.d/media.repo', skipping.
