@@ -1,3 +1,20 @@
+@echo off
+set PGPASSWORD=your_password_here
+psql -U postgres -d dbname -c "SELECT pid, locktype, relation, virtualtransaction, virtualxid, state, query FROM pg_locks JOIN pg_stat_activity ON pg_locks.pid = pg_stat_activity.pid WHERE state <> 'idle';" >> "lock_output.log" 2>&1
+
+:: Kiểm tra nếu file log có chứa lock
+findstr /C:"locktype" lock_output.log
+if %errorlevel% equ 0 (
+    :: Gọi PowerShell script để gửi email
+    powershell.exe -File send_email.ps1
+)
+$smtpServer = "smtp.yourserver.com"
+$smtpFrom = "your_email@domain.com"
+$smtpTo = "recipient_email@domain.com"
+$messageSubject = "Database Lock Detected"
+$messageBody = "A lock has been detected in the database. Please check the log file for details."
+$smtp = New-Object System.Net.Mail.SmtpClient($smtpServer)
+$smtp.Send($smtpFrom, $smtpTo, $messageSubject, $messageBody)
 {
   "Routes": [
     {
