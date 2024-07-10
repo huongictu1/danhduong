@@ -1,4 +1,31 @@
 //tạo các class
+#-------------------------------------------------------------------
+# Database settings
+#-------------------------------------------------------------------
+database = postgres
+pg_host = 192.168.173.67
+pg_port = 5432
+pg_user = kong
+pg_password = kong123
+pg_database = Kong
+
+#-------------------------------------------------------------------
+# Network settings
+#-------------------------------------------------------------------
+admin_listen = 0.0.0.0:8001, 0.0.0.0:8444 ssl
+proxy_listen = 0.0.0.0:8000, 0.0.0.0:8443 ssl
+trusted_ips = 0.0.0.0/0, ::/0
+
+#-------------------------------------------------------------------
+# Logging settings
+#-------------------------------------------------------------------
+admin_access_log = /usr/local/kong/logs/admin_access.log
+admin_error_log = /usr/local/kong/logs/error.log
+
+#-------------------------------------------------------------------
+# Misc settings
+#-------------------------------------------------------------------
+plugins = bundled
 public class JobCancellationFilter : JobFilterAttribute, IApplyStateFilter
     {
         private readonly IJobCancellationToken _jobCancellationToken;
