@@ -1,4 +1,28 @@
 //tạo các class
+CREATE OR REPLACE FUNCTION read_log_after_time(filename text, start_time text)
+RETURNS text
+LANGUAGE plpython3u
+AS $$
+import os
+import re
+
+file_path = os.path.join('/path/to/pg_log', filename)
+with open(file_path, 'r') as file:
+    lines = file.readlines()
+
+# Regular expression to match timestamp and filter lines
+pattern = re.compile(r'^\d{4}-\d{2}-\d{2} (\d{2}:\d{2}:\d{2})')
+filtered_lines = []
+
+for line in lines:
+    match = pattern.match(line)
+    if match:
+        timestamp = match.group(1)
+        if timestamp >= start_time:
+            filtered_lines.append(line)
+
+return ''.join(filtered_lines)
+$$;
 #-------------------------------------------------------------------
 # Database settings
 #-------------------------------------------------------------------
