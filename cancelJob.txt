@@ -1,3 +1,115 @@
+public class CustomDirectoryBrowserMiddleware
+{
+    private readonly RequestDelegate _next;
+    private readonly IFileProvider _fileProvider;
+    private readonly string _requestPath;
+
+    public CustomDirectoryBrowserMiddleware(RequestDelegate next, IFileProvider fileProvider, string requestPath)
+    {
+        _next = next;
+        _fileProvider = fileProvider;
+        _requestPath = requestPath;
+    }
+
+    public async Task InvokeAsync(HttpContext context)
+    {
+        // Kiểm tra xem yêu cầu có bắt đầu bằng requestPath không
+        if (context.Request.Path.StartsWithSegments(_requestPath, out var remainingPath))
+        {
+            var contents = _fileProvider.GetDirectoryContents(remainingPath);
+            if (contents.Exists)
+            {
+                var sortedContents = contents.OrderBy(f => f.Name).ToList(); // Sắp xếp theo tên
+
+                context.Response.ContentType = "text/html";
+                await context.Response.WriteAsync(@"
+<!DOCTYPE html>
+<html lang='en'>
+<head>
+    <meta charset='UTF-8'>
+    <meta name='viewport' content='width=device-width, initial-scale=1.0'>
+    <title>Directory Browser</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+        header {
+            margin-bottom: 20px;
+        }
+        #breadcrumb {
+            margin-bottom: 20px;
+        }
+        #index {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        #index th, #index td {
+            padding: 8px 12px;
+            border: 1px solid #ddd;
+        }
+        #index th {
+            background-color: #f4f4f4;
+        }
+        .name a {
+            color: #007bff;
+            text-decoration: none;
+        }
+        .name a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Index of <span id='current-path'>" + remainingPath + @"</span></h1>
+    </header>
+    <nav id='breadcrumb'>" + CreateBreadcrumb(context.Request.Path.Value) + @"</nav>
+    <section id='main'>
+        <table id='index' summary='The list of files in the given directory. Column headers are listed in the first row.'>
+            <thead>
+                <tr>
+                    <th abbr='Name'>Name</th>
+                    <th abbr='Size'>Size</th>
+                    <th abbr='Modified'>Last Modified</th>
+                </tr>
+            </thead>
+            <tbody id='file-list'>
+                " + CreateFileList(sortedContents) + @"
+            </tbody>
+        </table>
+    </section>
+</body>
+</html>
+");
+                return;
+            }
+        }
+
+        await _next(context);
+    }
+
+    private string CreateBreadcrumb(string path)
+    {
+        var parts = path.Split('/').Where(part => !string.IsNullOrEmpty(part)).ToArray();
+        var breadcrumb = string.Join(" / ", parts.Select((part, index) => 
+        {
+            var href = "/" + string.Join("/", parts.Take(index + 1));
+            return $"<a href='{href}'>{part}</a>";
+        }));
+        return breadcrumb;
+    }
+
+    private string CreateFileList(IEnumerable<IFileInfo> contents)
+    {
+        var rows = contents.Select(file => $@"
+<tr class='file'>
+    <td class='name'><a href='{(file.IsDirectory ? file.Name : "." + file.Name)}'>{file.Name}</a></td>
+    <td class='length'>{(file.IsDirectory ? "-" : file.Length.ToString("N0"))}</td>
+    <td class='modified'>{file.LastModified.ToString("G")}</td>
+</tr>").ToArray();
+        return string.Join(Environment.NewLine, rows);
+    }
+}
 global:
   scrape_interval: 15s  # Tần suất thu thập dữ liệu
   evaluation_interval: 15s  # Tần suất đánh giá các biểu thức rule
