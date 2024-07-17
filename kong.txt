@@ -1,3 +1,60 @@
+public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+{
+    var physicalFileProvider = new PhysicalFileProvider(Path.Combine(env.ContentRootPath, "YourDirectory"));
+    var requestPath = "/files";
+
+    app.UseStaticFiles(new StaticFileOptions
+    {
+        FileProvider = physicalFileProvider,
+        RequestPath = requestPath
+    });
+
+    app.UseDirectoryBrowser(new DirectoryBrowserOptions
+    {
+        FileProvider = physicalFileProvider,
+        RequestPath = requestPath
+    });
+
+    app.UseMiddleware<CustomDirectoryBrowserMiddleware>(physicalFileProvider, requestPath);
+}
+
+public class CustomDirectoryBrowserMiddleware
+{
+    private readonly RequestDelegate _next;
+    private readonly IFileProvider _fileProvider;
+    private readonly string _requestPath;
+
+    public CustomDirectoryBrowserMiddleware(RequestDelegate next, IFileProvider fileProvider, string requestPath)
+    {
+        _next = next;
+        _fileProvider = fileProvider;
+        _requestPath = requestPath;
+    }
+
+    public async Task InvokeAsync(HttpContext context)
+    {
+        if (context.Request.Path.StartsWithSegments(_requestPath))
+        {
+            var contents = _fileProvider.GetDirectoryContents(context.Request.Path.Value.Substring(_requestPath.Length));
+            if (contents.Exists)
+            {
+                var sortedContents = contents.OrderBy(f => f.Name).ToList(); // Sắp xếp theo tên
+
+                context.Response.ContentType = "text/html";
+                await context.Response.WriteAsync("<html><body><ul>");
+                foreach (var file in sortedContents)
+                {
+                    var filePath = Path.Combine(_requestPath, file.Name);
+                    await context.Response.WriteAsync($"<li><a href='{filePath}'>{file.Name}</a></li>");
+                }
+                await context.Response.WriteAsync("</ul></body></html>");
+                return;
+            }
+        }
+
+        await _next(context);
+    }
+}
 using System;
 using System.IO;
 using System.Diagnostics;
