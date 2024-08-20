@@ -94,4 +94,30 @@ Vui lòng kiểm tra tình trạng và khắc phục ngay lập tức. Bạn có
   * Mô tả: {{ .Annotations.description }}
 {{ end }}
 
+
+
+
+🚨 **[{{ .Status | toUpper }}] Cảnh báo: {{ .CommonLabels.alertname }}**
+
+**📅 Thời gian**: {{ .StartsAt }}
+
+**💻 Instance**: {{ .CommonLabels.instance }}
+
+**🔍 Chi tiết Cảnh báo**:
+{{ range .Alerts -}}
+  * **Tóm tắt**: {{ .Annotations.summary }}
+  * **Mô tả**: {{ .Annotations.description }}
+  * **Runbook URL**: {{ .Annotations.runbook_url }}
+  * **Nguồn**: {{ .Labels.source }}
+{{ end }}
+
+🔧 **Thao tác đề xuất**:
+Vui lòng kiểm tra hệ thống tại **{{ .CommonLabels.instance }}** và thực hiện các bước trong [Runbook]({{ .Annotations.runbook_url }}) để khắc phục vấn đề.
+
+**🔗 Thông tin thêm**:
+- Tên cảnh báo: {{ .CommonLabels.alertname }}
+- Source: {{ .Labels.source }}
+- Mức độ nghiêm trọng: {{ .Labels.severity }}
+
+
 Hành động khuyến nghị: Kiểm tra hệ thống ngay lập tức và liên hệ bộ phận IT nếu cần hỗ trợ.
