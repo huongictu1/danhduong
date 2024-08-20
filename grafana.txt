@@ -1,0 +1,97 @@
+📢 [{{ .Status | toUpper }}] Cảnh báo: {{ .CommonLabels.alertname }}!
+
+🔖 Nhóm: {{ .GroupLabels.job }}
+💻 Máy chủ: {{ .CommonLabels.instance }}
+
+🔍 Mô tả: {{ .CommonAnnotations.description }}
+🕒 Thời gian: {{ .Alerts | len }} cảnh báo đang {{ .Status }} lúc {{ .Alerts.Firing | len }}.
+
+🚨 Chi tiết:
+{{ range .Alerts -}}
+  - *Cảnh báo*: {{ .Annotations.summary }}
+    *Mức độ nghiêm trọng*: {{ .Labels.severity }}
+    *Chi tiết*: {{ .Annotations.description }}
+{{ end }}
+
+
+
+
+
+
+
+
+
+
+🔔 **Cảnh báo trạng thái: {{ .Status | toUpper }}**
+
+📌 **Nhãn cảnh báo**:
+{{ range .CommonLabels.SortedPairs }}
+  - {{ .Name }}: {{ .Value }}
+{{ end }}
+
+📝 **Thông tin chi tiết**:
+{{ range .Alerts -}}
+  * Cảnh báo: {{ .Annotations.summary }}
+    - Mức độ: {{ .Labels.severity }}
+    - Mô tả: {{ .Annotations.description }}
+    - Thời gian: {{ .StartsAt }}
+{{ end }}
+
+📅 **Thời gian**: {{ .Alerts | len }} cảnh báo đang ở trạng thái {{ .Status }} lúc {{ .EndsAt }}.
+
+
+
+
+
+
+
+
+💡 [{{ .Status | toUpper }}] Cảnh báo tại {{ .CommonLabels.instance }}
+
+| Cảnh báo | Mô tả | Thời gian |
+| -------- | ----- | --------- |
+{{ range .Alerts -}}
+| {{ .Labels.alertname }} | {{ .Annotations.description }} | {{ .StartsAt }} |
+{{ end }}
+
+🔧 **Thao tác đề xuất**: Kiểm tra hệ thống ngay lập tức và thực hiện biện pháp khắc phục phù hợp.
+
+
+
+
+
+
+
+⚠️ **Cảnh báo: {{ .CommonLabels.alertname }}** đang {{ .Status | toUpper }} tại {{ .CommonLabels.instance }}.
+
+🔍 **Thông tin chi tiết**:
+{{ range .Alerts -}}
+  * Tóm tắt: {{ .Annotations.summary }}
+  * Mô tả: {{ .Annotations.description }}
+  * Mức độ: {{ .Labels.severity }}
+  * Thời gian: {{ .StartsAt }}
+{{ end }}
+
+📢 **Thao tác cần thiết**: 
+Vui lòng kiểm tra tình trạng và khắc phục ngay lập tức. Bạn có thể liên hệ bộ phận IT để hỗ trợ.
+
+
+
+
+
+
+
+
+🚨 **[{{ .Status | toUpper }}] Cảnh báo {{ .CommonLabels.alertname }}** tại {{ .CommonLabels.instance }}:
+
+**📅 Thời gian**: {{ .StartsAt }}
+**🔧 Máy chủ**: {{ .CommonLabels.instance }}
+**⚠️ Mức độ nghiêm trọng**: {{ .Labels.severity }}
+
+**🔍 Chi tiết**:
+{{ range .Alerts -}}
+  * Tóm tắt: {{ .Annotations.summary }}
+  * Mô tả: {{ .Annotations.description }}
+{{ end }}
+
+Hành động khuyến nghị: Kiểm tra hệ thống ngay lập tức và liên hệ bộ phận IT nếu cần hỗ trợ.
