@@ -1,31 +1,102 @@
-abc
-CREATE OR REPLACE FUNCTION sync_data()
-RETURNS void AS $$
-DECLARE
-    record RECORD;
-    table_name TEXT;
-    table_columns TEXT;
-BEGIN
-    FOR record IN 
-        SELECT table_name 
-        FROM information_schema.tables 
-        WHERE table_schema = 'public' AND table_type = 'BASE TABLE'
-    LOOP
-        table_name := record.table_name;
+1.	Introduce yourself?
+Xin chao, my name’s Hung, from TS APPLICATION GROUP, PRODUCTION IT department.
+I have 5.5 years working experience in TS FACTORY.
+3 years working for TS-MO and 2.5 years working for PIT.
+I P.I.C of 4 main jobs:
+	Firstly, leader of RPA (Robotic process automation) project, this project already got 1st prize of CVN award last year and current now already katsu-jin 14 humans/month.
+	2nd, Develop Part Quality Control System for Div 1, 3 factories, this project katsu-jin 12 Ops.
+	3rd, Develop TS-MO IT system support production, ex: Dandori control system, Material control system, die management system…
+	Finally, I’m also research and apply new IT technology to apply for CVN, Ex: OCR, IoT, AI…
+That all about me.
 
-        -- Fetch column names
-        SELECT string_agg(column_name, ', ') 
-        INTO table_columns 
-        FROM information_schema.columns 
-        WHERE table_schema = 'public' AND table_name = table_name;
+2.	What is your job policy?
+Simple, stable, efficiency, easy to expand.
 
-        EXECUTE format(
-            'INSERT INTO public.%I (%s)
-             SELECT %s
-             FROM dblink(''ts_psi_server'', ''SELECT %s FROM %I'') 
-             AS data(%s);',
-            table_name, table_columns, table_columns, table_columns, table_name, table_columns
-        );
-    END LOOP;
-END;
-$$ LANGUAGE plpgsql;
+3.	Do you like your jobs? What is the interesting?	
+Yes, I like it. 
+In my job, have many new technology, I can get new knowledge from it.
+And I working with many department, help me improve communication skill.			
+4.	What is the difficulty in your job? How can you settle up it?	
+When I apply or expand IT system for production department, almost users are operator. Who not have IT skill, so sometime I have to take more time to be apply my IT system.
+To settle up it, 
+The first, before apply official I apply some demo version to get feedback from user and 
+The second, discuss directly with them to improve my system for more simple and suitable.
+After that, I make standard document and training for all operator.
+
+ 5. What is your achievement? How can you get it?	
+	(What is your biggest system? What is most difficult & overcome?)
+      It’s Quality part control system.
+      I make it when working in TS-MOLD.
+      About this system.
+	The first, it visualize all check point, work guide of part picture by picture, so can reduce mistake, reduce prepare time for check sheet.
+	The second, it connect with all measurement tool auto get data from it, so can reduce time for record data.
+	Finally, this system auto analysis tendency of measuring data, so can take action before trouble happen.
+	After apply, I already katsu-jin 9 QC members, reduce 1ppm assy-return index, 9 mistake per month.
+	After that, I already expand to TS-MSD,TL-MQA,TL-MOLDING.
+	In this time I co-operate with TL-MQA to expand for all supplier outside and inside.	
+6	How many team in your dept.? How to manage team (How to manage team: How do you control the job in your team)?
+Have 2 team. TS application & TL application.
+To manage team.
+	The first, visualize skill of all member by skill map.
+	The second, setup common target and make sure all member understand and follow it.
+	The third, base on skill map to assign job for suitable member.
+	Finally, confirm actual result job and explain archive or not archive.
+	After that, together to solving not archive immediate.
+	
+7	Your department policy focus on what?
+Ensure quality, optimize cost for operate, IT skill up for production department by apply IT system.
+
+8. Which is the most important point and the most difficult point?
+	Most important point is how to make good communication with user. Because it help me quickly detect trouble, countermeasure to improve my system.
+	Most difficult point is when apply IT system for other department. Almost user are Operator, who not have IT skill. So I have to take more time for training them and apply my system.
+9. Now you are a leader, so how many people now in your team? How you can handle leader role?
+	The first, I visualize skill map of all member.
+	The second, Make common target for my team base on target of my department.
+	The third, Base on skill map I assign job for suitable member.
+	The four, Follow their progress and explain for archive and not archive target.
+	Finally, Together to improve not archive immediately.
+10. What is different between Mold and PIT?  
+	In MOLD, I almost make and apply IT project related molding job of 3 factory.
+In PIT, I not only apply for molding but also for other department: MSD, MQA, LOG… 
+11. As a G4, what will you do?	
+ 	The first, I continuous improve technical skill to training for my subordinate.
+	The second, Improve management skill and English skill and motivate my subordinate.
+	The third, strong co-operate with other department to apply new system or expand my current system for more department.
+	Finally, make standard of IT project for my department with purpose easy to develop and maintain by all member, so reduce time for apply IT project.
+12. What is role that CVN expect of G4 member?	
+	I think, 
+The first, how to manage and motivate his subordinate to archive common target.
+The second, have good communicate skill to working other department to learn and share ideal or solution from them.
+Finally, have to good training skill.
+
+13. As a G4, what is the most important and difficulty?
+	Most important: How to manage and motivate his subordinate.	
+	Difficulty: He have to deeply understand his subordinate about technical skill, character. After that he can assign job for them.
+14. What is different between G3 and G4?
+	The first G3 have normal technical skill, G4 have specialist technical skill.
+	The second, G3 only care his job, G4 not only care his job but also care other job to archive common target.
+	Finally, G4 have high skill in analysis IT system to make good system, prevent trouble for system and have big vision to apply or expand, combine IT system, can give ideal, solution to build IT concept for other department.
+
+
+15. In comparison with last year now IT change anything? Is it good?	
+16. What is the weak point in your dept.? Do you have any idea to improve it?	
+(What is your dept. problem?)
+	The first, some member use difference programming language so difficult to get support from each member.
+	The second, my department not have standard structure for IT project. Each member have other style, so when have one member quit job then other member difficult to understand of his project.
+To improve the first weak point, I will discuss with all member and my boss to choice 1 common programming language which suitable and easy apply for CVN environment.
+To improve the second weak point, I will study method from other IT company and on internet to make standard project for my department.
+
+17. beside your main job? Are you PIC of other activity? How can you make them balance?
+18. What is most important working skill at CVN? Why?	
+     It’s working with PDCA
+	Because, PDCA is basic circle for job management. 
+With PDCA circle, I can set up clear plan by yearly, monthly and daily, follow activity well and have quickly solution when detecting troubles. 
+PDCA helps me to carry out my job successful and smoothly.
+		
+19. What is main point, slogan of company policy and factory policy? What you think about them?
+20. What is important when you support user?
+       Make user feel comfortable. 						
+21. What will you do when have trouble in jobs? How to prevent trouble?			
+The first, I will inform for P.I.C of department.
+	The second, Give countermeasure temporary if system affect to production.
+	Finally, Ho-ren-so with department to find root cause after that improve and prevent trouble happen again.			
