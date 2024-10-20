@@ -1,106 +1,70 @@
-trong c# net 6 api, tôi có 1 array date time (arrA), trong đó là các giá trị datetime liên tiếp nhau, mỗi giá trị cách nhau 10 phút, ví dụ 2021-06-01 08:00, 2021-06-01 08:10, 2021-06-01 08:20,
-function populateData(data) {
-    var container = $('#data-container');
-    container.empty(); // Xóa nội dung cũ
+Q: Introduce yourself, your mission .
+A: Firstly, I'd like to say thank for giving me a chance to be here today.		
+My name's Huong, I'm a member of Application group, IT department.	
+I have been working at CVN since Febuary.2020.	
+Now, with aiming development, control and operation of IT system and program.
+I'm person in-charge to do 4 main jobs.
+The first, I'm leading TS application group, training, skill up and follow up.	The second, I take care database of Hoan Kiem system.
+The third, I develop production admin system PSI.
+The fourth, I develop & maintain indirect system such as: Birthday Card, Fresh summer, Contract, CICE. That's all about my introduction. Thanks for your listening.
 
-    data.forEach(item => {
-        var htmlString = `
-            <div>
-                <a href="${item.linkField}">Link</a>
-                <div>${item.htmlField}</div>
-                <p>${item.otherField1}</p>
-                <p>${item.otherField2}</p>
-                <p>${item.otherField3}</p>
-                <p>${item.otherField4}</p>
-            </div>
-        `;
-        container.append(htmlString);
-    });
-}
-<div id="data-container"></div>
+Q: what is the biggest archievement
+A: That's PSI project (Production Shipment Inventory).	
+As you know, PDC1 mainly job is make production plan and inventory management.
+Before, they using excel file, macro and manual jobs. So, it's slow and difficult to improve quality.
+from last year, I co-operate with PDC1 to develop PSI system.
+Until now, we collect some actual result.
+The first, reduce workload 14 persons.
+The second, remove manual jobs 50%.
+the third, accuracy archieved of inventory less than 0.1%.
+finally, increase operation flexibility about 5%.
+In this year, we have plan to expand to TL, QV.
+		
+Q: How to manage team (how do you control the job in your team) ?		
+A: To follow up a project.
+The first, after clarify the requirements, we make a project plan
+The second, at the daily morning meeting, we update the process and show difficult points to get advice from other members.
+The third, we also hold regular meeting in my team once time a week.	
+confirm actual result job and explain archieve or not archieve.	
+After that, together to solving not archieve immediately.
 
-array đó có độ dài 660 (bắt đầu từ 8h sáng tới 17h và từ 21h tới 6h sáng hôm sau) tương đương 6 ngày.
-tôi có 1 số nguyên đặt tên là ignore.
-tôi có 1 array time only (arrB), tôi muốn tìm từng giá trị của nó ở vị trí nào trong arrA và lớn hơn vị trí ignore.
-tôi có 1 array time only (arrC) độ dài mảng giống arrB, tôi muốn tìm từng giá trị của nó ở vị trí nào trong arrA và lớn hơn vị trí ignore và nhỏ hơn gần nhất với giá trị từng phần tử tương ứng arrB.  
-hãy giúp tôi
-using System;
-using System.Collections.Generic;
-using System.Linq;
+Q: After you will be upper grade, what can you to do/contribute		
+A: I have target for 1 year and 3 year.
+within the next 1 year, my target is complete the system development process. Make TS Application team become the best team in the Application group.
+I continue open more training course with on job training and study experience from TL/QV members.
+within the next 3 years, I completed renew TL/TS Hoan Kiem system, one of the biggest strategic projects to contribute more value for CVN			
+		
+Q: what is the biggest problems in your job ?	
+A: PDC operation not unify among 3 factories.
+So now I'm process to expand TL QV but different point still happen.	
+To resolve it, I require them to discuss more to unify on the workflow, standardize job, with window contact is TSPDC1.	
+It's really effectively. So far, we save time to modify program and in the future save time to maintainance.					
+		
+Q: what is the biggest challenge in your dept ?		
+A: one of the biggest challenges I face is update new technology.		
+Because IT technology always changes day by day.	
+Some current technology will become old, end of support and maybe have some risks.	
+I evaluate new technology, new version which suitable with current project.	
+After that, I update step by step to ensure it's not affect to process.							
+		
+Q: What will you do when have trouble in job ? How to prevent ?		
+A:  if I encounter Hoan Kiem system can not access, it could lead to stop line production.		
+the first, I immediately inform my managements & person in-charge of department (almost Assy departments).	
+the second, I give temporary action to quickly continue and avoid affect production.	
+finally, I horenso with related department to find root cause. After that improve, make why why analysis report, and prevent trouble happen again.
 
-public class Program
-{
-    public static void Main()
-    {
-        DateTime startTime = new DateTime(2021, 6, 1, 8, 0, 0);
-        List<DateTime> arrA = new List<DateTime>();
-        for (int i = 0; i < 660; i++)
-        {
-            arrA.Add(startTime.AddMinutes(i * 10));
-        }
-
-        int ignore = 100; // Giả sử giá trị ignore là 100
-        List<TimeOnly> arrB = new List<TimeOnly>
-        {
-            new TimeOnly(8, 0),
-            new TimeOnly(12, 30),
-            new TimeOnly(21, 0)
-        };
-        List<TimeOnly> arrC = new List<TimeOnly>
-        {
-            new TimeOnly(9, 0),
-            new TimeOnly(13, 0),
-            new TimeOnly(22, 0)
-        };
-
-        var resultB = FindPositions(arrA, arrB, ignore);
-        var resultC = FindPositionsWithCondition(arrA, arrB, arrC, ignore);
-
-        Console.WriteLine("Positions for arrB:");
-        foreach (var pos in resultB)
-        {
-            Console.WriteLine(pos);
-        }
-
-        Console.WriteLine("\nPositions for arrC:");
-        foreach (var pos in resultC)
-        {
-            Console.WriteLine(pos);
-        }
-    }
-
-    public static List<int> FindPositions(List<DateTime> arrA, List<TimeOnly> arrB, int ignore)
-    {
-        List<int> positions = new List<int>();
-
-        foreach (var time in arrB)
-        {
-            var pos = arrA.FindIndex(ignore, dt => new TimeOnly(dt.Hour, dt.Minute) == time);
-            positions.Add(pos);
-        }
-
-        return positions;
-    }
-
-    public static List<int> FindPositionsWithCondition(List<DateTime> arrA, List<TimeOnly> arrB, List<TimeOnly> arrC, int ignore)
-    {
-        List<int> positions = new List<int>();
-
-        for (int i = 0; i < arrB.Count; i++)
-        {
-            var timeB = arrB[i];
-            var timeC = arrC[i];
-            var posB = arrA.FindIndex(ignore, dt => new TimeOnly(dt.Hour, dt.Minute) == timeB);
-            if (posB == -1)
-            {
-                positions.Add(-1);
-                continue;
-            }
-
-            var posC = arrA.FindIndex(ignore, dt => new TimeOnly(dt.Hour, dt.Minute) < timeC && new TimeOnly(dt.Hour, dt.Minute) > timeB);
-            positions.Add(posC);
-        }
-
-        return positions;
-    }
-}
+Q: How to resolve conflict in team ?	
+A: In the previous project, there were 2 members involved. But they have different development approaches.
+ the first, I always prioritize listening and understanding to together information from all related members.
+the second, I look for encourage everyone to focus on the common target of the team.
+the third, I asked them to evaluate to advantages and disadvantages of each method.
+Finally, I want to every members to understand and combine the good points each method to become best practice.
+After all, the conflict is resolved, not affect the team's performance and we have a case study to improve technical skill.
+				
+Q: What is your strong point, weak point ?		
+A:My strong point: In my dailly job always have monitoring activities (by monitoring system, by logging, by email).
+It help me optimize our products and prevent risks/trouble happen.
+My weak point: because I cannot understand department job, so I take time to study to develop system.
+To overcome weak point, I have 3 action:
+the first dept hold meeting to explain their detail requirements. They will show background jobs: which manual job, excel fille and macro.
+the second, increase communicate, actively genba workshop to deeply understand job finally, I will provide fix  forms for department to fill out, through  which we will better  understand
