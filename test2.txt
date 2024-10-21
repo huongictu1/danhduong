@@ -1,0 +1,96 @@
+H: Giới thiệu về bản thân, sứ mệnh của bạn.
+A: Trước tiên, tôi muốn cảm ơn vì đã cho tôi cơ hội có mặt ở đây hôm nay.
+Tôi tên là Hương, tôi là thành viên của nhóm Ứng dụng, phòng CNTT.
+Tôi đã làm việc tại CVN từ tháng 2 năm 2020.
+Hiện tại, với mục tiêu phát triển, kiểm soát và vận hành hệ thống và chương trình CNTT.
+Tôi là người phụ trách thực hiện 4 công việc chính.
+Đầu tiên, tôi là người lãnh đạo nhóm ứng dụng TS, đào tạo, nâng cao kỹ năng và theo dõi.
+Thứ hai, tôi quản lý cơ sở dữ liệu của hệ thống Hoàn Kiếm.
+Thứ ba, tôi phát triển hệ thống quản trị sản xuất PSI.
+Thứ tư, tôi phát triển & bảo trì các hệ thống gián tiếp như: Thiệp sinh nhật, Mùa hè tươi mát, Hợp đồng, CICE.
+Đó là tất cả về phần giới thiệu của tôi. Cảm ơn các bạn đã lắng nghe.
+
+H: Thành tựu lớn nhất là gì
+A: Đó là dự án PSI (Production Shipment Inventory).
+Như các bạn đã biết, công việc chủ yếu của PDC1 là lập kế hoạch sản xuất và quản lý hàng tồn kho một phần.
+Trước đây, họ sử dụng tệp excel, macro và công việc thủ công. Có 3 vấn đề lớn:
++ Làm cho chất lượng không chính xác cao phụ thuộc vào kỹ năng của con người.
++ Có nhiều công việc thủ công nên mất nhiều thời gian để hoàn thành.
++ Rất khó để thích ứng với tính linh hoạt của sản xuất.
+Từ năm ngoái, tôi đã hợp tác với PDC1 để phát triển hệ thống PSI.
+Cho đến nay, chúng tôi đã thu thập được một số kết quả thực tế.
+Đầu tiên, shoujin 5,2 người.
+Thứ hai, loại bỏ 50% công việc thủ công.
+Thứ ba, hỗ trợ cải thiện mục tiêu độ chính xác của hàng tồn kho dưới 0,1%.
+Cuối cùng, tăng tính linh hoạt của hoạt động khoảng 5%.
+Trong năm nay, chúng tôi có kế hoạch mở rộng sang TL, QV.
+
+H: Làm thế nào để quản lý nhóm (bạn kiểm soát công việc trong nhóm của mình như thế nào)?
+A: Để theo dõi một dự án.
+Đầu tiên, sau khi làm rõ các yêu cầu, chúng tôi lập kế hoạch cho dự án
+Thứ hai, tại cuộc họp buổi sáng hàng ngày, chúng tôi cập nhật quy trình và chỉ ra những điểm khó để nhận được lời khuyên từ các thành viên khác.
+Thứ ba, chúng tôi cũng tổ chức họp thường kỳ trong nhóm của tôi một lần một tuần.
+xác nhận kết quả công việc thực tế và giải thích lưu trữ hay không lưu trữ.
+Sau đó, cùng nhau giải quyết không lưu trữ ngay lập tức.
+
+H: Sau khi lên lớp trên, bạn có thể làm/đóng góp gì
+A: Tôi có mục tiêu trong 1 năm và 3 năm.
+Trong vòng 1 năm tới, mục tiêu của tôi là hoàn thành quy trình phát triển hệ thống. Đưa nhóm TS Application trở thành nhóm tốt nhất trong nhóm Application.
+Tôi tiếp tục mở thêm khóa đào tạo với đào tạo tại chỗ và kinh nghiệm học tập từ các thành viên TL/QV.
+Trong vòng 3 năm tới, tôi đã hoàn thành việc đổi mới hệ thống TL/TS Hoàn Kiếm, một trong những dự án chiến lược lớn nhất đóng góp nhiều giá trị hơn cho CVN
+
+H: Vấn đề lớn nhất trong công việc của bạn là gì?
+A: Đối với mỗi hệ thống cải tiến trong bộ phận của chúng tôi, chúng tôi luôn có kế hoạch mở rộng cho nhà máy TS/QV.
+Nhưng khi chúng tôi mở rộng hệ thống sang nhà máy khác, mỗi nhà máy có phương pháp và quy trình kiểm soát khác nhau.
+Vì vậy, tôi mất nhiều thời gian để sửa đổi cho phù hợp.
+Hoạt động PDC không thống nhất giữa 3 nhà máy.
+Vậy nên hiện tại tôi đang tiến hành mở rộng hệ thống PSI lên TL QV nhưng vẫn còn nhiều điểm khác nhau xảy ra.
+Để giải quyết, tôi yêu cầu họ thảo luận nhiều hơn để thống nhất về quy trình làm việc, chuẩn hóa công việc, với cửa sổ liên hệ là TSPDC1.
+Thực sự hiệu quả. Cho đến nay, chúng tôi tiết kiệm được thời gian để sửa đổi chương trình và trong tương lai tiết kiệm được thời gian để bảo trì.
+
+H: Thách thức lớn nhất trong bộ phận của bạn là gì?
+A: Một trong những thách thức lớn nhất mà tôi phải đối mặt là cập nhật công nghệ mới.
+Bởi vì công nghệ CNTT luôn thay đổi từng ngày.
+Một số công nghệ hiện tại sẽ trở nên cũ, hết hỗ trợ và có thể có một số rủi ro.
+Tôi đánh giá công nghệ mới, phiên bản mới phù hợp với dự án hiện tại.
+Sau đó, tôi cập nhật từng bước để đảm bảo không ảnh hưởng đến quy trình.
+
+H: Bạn sẽ làm gì khi gặp sự cố trong công việc? Làm thế nào để phòng ngừa?
+A: Khi gặp sự cố, ưu tiên hàng đầu là không ảnh hưởng đến sản xuất và hành động nhanh chóng.
+Ví dụ: nếu hệ thống Hoàn Kiếm không thể truy cập, có thể dẫn đến dừng sản xuất.
+đầu tiên, tôi thông báo ngay cho ban quản lý và người phụ trách phòng ban (hầu hết là các phòng ban Assy).
+thứ hai, tôi đưa ra hành động tạm thời để nhanh chóng tiếp tục và tránh ảnh hưởng đến sản xuất.
+cuối cùng, tôi họp với các phòng ban liên quan để tìm ra nguyên nhân gốc rễ. Sau đó cải thiện, lập báo cáo phân tích tại sao và ngăn ngừa sự cố xảy ra lần nữa.
+
+Q: Làm thế nào để giải quyết xung đột trong nhóm?
+A: Trong dự án trước, có 2 thành viên tham gia. Nhưng họ có cách tiếp cận phát triển khác nhau.
+đầu tiên, tôi luôn ưu tiên lắng nghe và hiểu thông tin từ tất cả các thành viên liên quan.
+thứ hai, tôi tìm cách khuyến khích mọi người tập trung vào mục tiêu chung của nhóm.
+thứ ba, tôi yêu cầu họ đánh giá ưu và nhược điểm của từng phương pháp.
+cuối cùng, tôi muốn mọi thành viên hiểu và kết hợp những điểm tốt của từng phương pháp để trở thành phương pháp thực hành tốt nhất.
+sau cùng, xung đột được giải quyết, không ảnh hưởng đến hiệu suất của nhóm và chúng tôi có một nghiên cứu điển hình để cải thiện kỹ năng kỹ thuật.
+
+Q: Điểm mạnh, điểm yếu của bạn là gì?
+A: Điểm mạnh của tôi: Trong công việc hàng ngày của tôi luôn có các hoạt động giám sát (bằng hệ thống giám sát, bằng cách ghi nhật ký, bằng email).
+Nó giúp tôi tối ưu hóa sản phẩm của chúng tôi và ngăn ngừa rủi ro/rắc rối xảy ra.
+Điểm yếu của tôi: vì tôi không hiểu công việc của phòng ban, nên tôi dành thời gian để nghiên cứu phát triển hệ thống.
+Để khắc phục điểm yếu này, tôi có 3 hành động:
+phòng ban đầu tiên tổ chức họp để giải thích chi tiết các yêu cầu của họ. Họ sẽ trình bày các công việc cơ bản: công việc thủ công nào, excel fille và macro.
+thứ hai, tăng cường giao tiếp, tích cực tham gia hội thảo genba để hiểu sâu sắc công việc.
+Cuối cùng, tôi sẽ cung cấp các biểu mẫu sửa lỗi để phòng ban điền, qua đó chúng ta sẽ hiểu rõ hơn
+
+Hỏi: Làm thế nào để tạo động lực, tăng cường tinh thần làm việc nhóm?
+A:Trong quá trình làm việc, tôi đã thành công trong việc xây dựng một nhóm làm việc hiệu quả.
+Để đạt được điều đó, bằng cách đặt ra mục tiêu rõ ràng cho từng dự án, tạo ra môi trường làm việc cởi mở và sáng tạo.
+Luôn ghi nhận và khen thưởng những đóng góp của từng thành viên.
+Ví dụ: khi phát triển dự án, tôi khuyến khích tất cả các thành viên trong nhóm áp dụng công nghệ mới.
+Tôi ghi nhận những đóng góp và kết quả tích cực mà họ mang lại, có thể là tối ưu hóa, bảo mật hơn, hỗ trợ trực quan hóa. Và đôi khi chúng tôi cũng tổ chức tiệc dã ngoại để cải thiện giao tiếp.
+
+Hỏi: Làm thế nào để cải thiện giao tiếp với phòng ban?
+
+A: Để hiểu nhau và nhanh chóng hoàn thành hệ thống phát triển
+khi phòng ban yêu cầu CNTT tạo hệ thống.
+CNTT: lúc đầu, CNTT không thể hiểu công việc của phòng ban, chúng tôi mất thời gian để nghiên cứu.
+Phòng ban: thiếu tài liệu & yêu cầu giải thích để CNTT có thể hiểu.
+Giải pháp: Đầu tiên, tăng cường giao tiếp với phòng ban để giải quyết yêu cầu, chủ động tổ chức hội thảo genba để hiểu sâu sắc công việc của phòng ban.
+Chúng tôi sẽ cung cấp các biểu mẫu cố định để các phòng ban điền vào, qua đó chúng tôi sẽ hiểu rõ hơn các yêu cầu của phòng ban.
