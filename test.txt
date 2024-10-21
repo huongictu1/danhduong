@@ -4,19 +4,24 @@ My name's Huong, I'm a member of Application group, IT department.
 I have been working at CVN since Febuary.2020.	
 Now, with aiming development, control and operation of IT system and program.
 I'm person in-charge to do 4 main jobs.
-The first, I'm leading TS application group, training, skill up and follow up.	The second, I take care database of Hoan Kiem system.
+The first, I'm leading TS application group, training, skill up and follow up.	
+The second, I take care database of Hoan Kiem system.
 The third, I develop production admin system PSI.
-The fourth, I develop & maintain indirect system such as: Birthday Card, Fresh summer, Contract, CICE. That's all about my introduction. Thanks for your listening.
+The fourth, I develop & maintain indirect system such as: Birthday Card, Fresh summer, Contract, CICE. 
+That's all about my introduction. Thanks for your listening.
 
 Q: what is the biggest archievement
 A: That's PSI project (Production Shipment Inventory).	
-As you know, PDC1 mainly job is make production plan and inventory management.
-Before, they using excel file, macro and manual jobs. So, it's slow and difficult to improve quality.
+As you know, PDC1 mainly job is make production plan and part-inventory management.
+Before, they using excel file, macro and manual jobs. It has 3 big problem:
++ It make quality not high accuracy depend on human skill.
++ It is many manual job so take long time to finish.
++ It very hard to adapt production flexibility.
 from last year, I co-operate with PDC1 to develop PSI system.
 Until now, we collect some actual result.
-The first, reduce workload 14 persons.
+The first, shoujin 5.2 persons.
 The second, remove manual jobs 50%.
-the third, accuracy archieved of inventory less than 0.1%.
+the third, support improvement inventory accuracy target less than 0.1%.
 finally, increase operation flexibility about 5%.
 In this year, we have plan to expand to TL, QV.
 		
@@ -35,8 +40,11 @@ I continue open more training course with on job training and study experience f
 within the next 3 years, I completed renew TL/TS Hoan Kiem system, one of the biggest strategic projects to contribute more value for CVN			
 		
 Q: what is the biggest problems in your job ?	
-A: PDC operation not unify among 3 factories.
-So now I'm process to expand TL QV but different point still happen.	
+A: For each improvement system in our dept, we always have plan to expand for TS/QV factory.
+But when we expand system to other factory, for each factory has method and process control different.
+So I take lot time to modify for suitable.
+PDC operation not unify among 3 factories.
+So now I'm process to expand PSI system to TL QV but different point still happen.	
 To resolve it, I require them to discuss more to unify on the workflow, standardize job, with window contact is TSPDC1.	
 It's really effectively. So far, we save time to modify program and in the future save time to maintainance.					
 		
@@ -48,7 +56,8 @@ I evaluate new technology, new version which suitable with current project.
 After that, I update step by step to ensure it's not affect to process.							
 		
 Q: What will you do when have trouble in job ? How to prevent ?		
-A:  if I encounter Hoan Kiem system can not access, it could lead to stop line production.		
+A: When I encounter trouble, the first priority is not affect to production and quickly action.
+Example: if Hoan Kiem system can not access, it could lead to stop line production.		
 the first, I immediately inform my managements & person in-charge of department (almost Assy departments).	
 the second, I give temporary action to quickly continue and avoid affect production.	
 finally, I horenso with related department to find root cause. After that improve, make why why analysis report, and prevent trouble happen again.
@@ -67,4 +76,21 @@ It help me optimize our products and prevent risks/trouble happen.
 My weak point: because I cannot understand department job, so I take time to study to develop system.
 To overcome weak point, I have 3 action:
 the first dept hold meeting to explain their detail requirements. They will show background jobs: which manual job, excel fille and macro.
-the second, increase communicate, actively genba workshop to deeply understand job finally, I will provide fix  forms for department to fill out, through  which we will better  understand
+the second, increase communicate, actively genba workshop to deeply understand job.
+Finally, I will provide fix  forms for department to fill out, through  which we will better understand
+
+
+Q: How to motivation, strengthen teamwork ?
+A:During our work, I have been successfull in building an effective team.
+To achieved it, by setting clear target for each project, creating an open and creative working environment.
+Always recognizing and reward the contributions of each member.
+Example: when developing the project, I encourage all members in the team to popose using new technology.
+I recognize the contributions and positive results they bring, maybe optimizing, more security, support visualize. And sometimes we also hold picnic party to improve communication.
+
+Q: how to improve communication with department ?
+A: In order mutual understand and quickly completed develop system
+when department request IT make system.
+IT: at first, IT can not understand department job, we take time to study.
+Dept: lack of document & requirement to explainfor IT can understand.
+Solution:The first, increase communication with department to clear request, actively genba workshop to deeply understand job of department.
+We will provide fixed forms for departments to fill out, through which we will better understand the department's requirements.
