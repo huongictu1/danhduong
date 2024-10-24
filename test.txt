@@ -94,3 +94,50 @@ IT: at first, IT can not understand department job, we take time to study.
 Dept: lack of document & requirement to explainfor IT can understand.
 Solution:The first, increase communication with department to clear request, actively genba workshop to deeply understand job of department.
 We will provide fixed forms for departments to fill out, through which we will better understand the department's requirements.
+
+
+What were the challenges in developing PSI? 
+The logic of PSI is very complex and has many processing streams. 
+So, we take a long time to develop it, and testing also. 
+To overcome difficult, we have 3 following actions:
+Firstly, I requested PDC1 to standardize the process and workflow.
+Secondly, I divided it into many small steps and implemented each part.
+Finally, I hold regular review meeting everyweek to confirm the results achieved or not achieved. 
+After that, we give solutions or continue to explain in more detail.
+
+
+
+what are you doing after promotion ?
+- the first, as a programming team leader, I will guide team members in perfecting the software development process and improving team effeciency.
+- the seconds, I will continue training not only IT members of IT Division but also IT members of other department to enhanced programming skills and help them optimize production system.
+- finally, I will proactively explore new technology trends and propose new product ideas.
+
+
+
+What is your mission ?
+my target is to become a master developing software that optimizes production.
+I want to create software tools that act as a virtual assistant for factory,help us work more efficiently,
+reduce trouble, and increase productivity.
+For example, I could develop software that helps us predict raw material needs, thereby reducing stockouts or overstocking.
+
+
+why your dept member regisn, overtime ?
+I think it's some reason:
+- The workload has increased recently due to new projects and urgent demands.
+- Sometimes we lack of staff shortages in critical position, remain members need to take care, so it is over workload.
+- Some of our workflow are not efficiently, leading to wasted time and effort.
+- finally, some employee may not have been suitable at CVN environment or job requirements.
+To resolve it, 
+- temporary action: I'm implemented measures such as re-arrange/re-assign/share job to other members, supporting each other to overcome challenges and first priority urgent/important job.
+- for long-term solutions: we've focus on workflow improvement, encourage creativity and study from other department, outside company.
+
+
+
+what is your dept problem ?
+the problem is my dept have 1 application group but allocate at 3 factories: TL team, TS team, QV team.
+we have many members with different levels of experience and also new comers. beside that each team have different teachnical approaches.
+So, the difficult is how to support each other and together working in the same project.
+to overcome, 
+the first, I continue open training course, on job training to other member. 
+the second, I make complete software development process to standardize our workflow.
+from that, we have the same approach and the problem is resolve.
