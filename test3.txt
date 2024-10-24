@@ -1,0 +1,23 @@
+What were the challenges in developing PSI? 
+The logic of PSI is very complex and has many processing streams. 
+So, we take a long time to develop it, and testing also. 
+To overcome difficult, we have 3 following actions:
+Firstly, I requested PDC1 to standardize the process and workflow.
+Secondly, I divided it into many small steps and implemented each part.
+Finally, I hold regular review meeting everyweek to confirm the results achieved or not achieved. 
+After that, we give solutions or continue to explain in more detail.
+
+
+
+what are you doing after promotion ?
+- the first, as a programming team leader, I will guide team members in perfecting the software development process and improving team effeciency.
+- the seconds, I will continue training not only IT members of IT Division but also IT members of other department to enhanced programming skills and help them optimize production system.
+- finally, I will proactively explore new technology trends and propose new product ideas.
+
+
+
+What is your mission ?
+my target is to become a master developing software that optimizes production.
+I want to create software tools that act as a virtual assistant for factory,help us work more efficiently,
+reduce trouble, and increase productivity.
+For example, I could develop software that helps us predict raw material needs, thereby reducing stockouts or overstocking.
