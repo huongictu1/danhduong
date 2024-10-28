@@ -1,0 +1,37 @@
+Firstly, I would like to thank our boss for selecting training for the award.
+Now, I'm going to introduce the API training class.
+My presentation has 4 parts.
+The first is the introduction,
+the second is the background of the IT div,
+the third is the training results,
+and finally, I will share additional information.
+
+The first about the introduction,
+as you know, Canon's development standard is Angular, Net Core, and PostgreSQL. 
+Angular is used for the front-end, Net Core for the back-end, and PostgreSQL for the database.
+API is a set of protocols that allows different applications to communicate and exchange data. 
+You can see here, an API same a waiter in a restaurant. Data is the food, and customers are the applications.
+
+The next, I want to show you the background of the IT division.
+Our division has 20 application members, with different levels of experience. 
+We have new members, and each person has a different programming style.
+Besides that, we develop applications on some diffetent platforms and programming languages. 
+So there are 3 difficulties here: first, it's difficult to support and maintain each other. Second, it's difficult to integrate or communicate between systems. Third, there is no standard development process.
+After getting approval from our managers, I organized an internal API training class with the following purposes: to provide basic training for new members, 
+to standardize programming following standards and common approaches, 
+and quality up application jobs by sharing extend knowledge.
+
+Next, I want to talk about the training results.
+My class was organized for 3 sessions with 12 members.
+After the course, the learners gained more knowledge. 
+They immediately improved their work, applied new methods, and also applied it to migrate systems.
+
+Finally, I want to share some additional information.
+This is information about the Net Core version. 
+Currently, some systems of the Tien Son factory are using Net Core 6, 
+but it will be out of support in November this year.
+Therefore, I propose upgrading to Net 8 for existing systems. 
+I will report the details in progress reports. 
+For new systems after October, we will use Net 8.
+
+That's all for my presentation. Thank you for listening.
