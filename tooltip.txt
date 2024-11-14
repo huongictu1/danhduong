@@ -1,0 +1,85 @@
+import { Component, Input } from '@angular/core';
+
+@Component({
+  selector: 'app-tooltip',
+  templateUrl: './tooltip.component.html',
+  styleUrls: ['./tooltip.component.css']
+})
+export class TooltipComponent {
+  @Input() content: string = '';
+  isVisible: boolean = false;
+  xPos: number = 0;
+  yPos: number = 0;
+
+  showTooltip(x: number, y: number) {
+    this.xPos = x;
+    this.yPos = y;
+    this.isVisible = true;
+  }
+
+  hideTooltip() {
+    this.isVisible = false;
+  }
+}
+
+
+<div *ngIf="isVisible" class="tooltip-container" [ngStyle]="{'top.px': yPos, 'left.px': xPos}" [innerHTML]="content"></div>
+
+.tooltip-container {
+  position: fixed;
+  background-color: #333;
+  color: #fff;
+  padding: 5px;
+  border-radius: 4px;
+  white-space: nowrap;
+  z-index: 1000;
+  transform: translateX(-50%);
+}
+
+
+
+
+<div>
+  <a href="#" 
+     (mouseenter)="showTooltip($event, 'Tooltip cho thẻ thứ nhất')" 
+     (mouseleave)="tooltip.hideTooltip()">
+    Thẻ 1
+  </a>
+</div>
+<div>
+  <a href="#" 
+     (mouseenter)="showTooltip($event, 'Tooltip cho thẻ thứ hai')" 
+     (mouseleave)="tooltip.hideTooltip()">
+    Thẻ 2
+  </a>
+</div>
+<div>
+  <a href="#" 
+     (mouseenter)="showTooltip($event, 'Tooltip cho thẻ thứ ba')" 
+     (mouseleave)="tooltip.hideTooltip()">
+    Thẻ 3
+  </a>
+</div>
+<app-tooltip #tooltip></app-tooltip>
+
+
+
+import { Component, ViewChild } from '@angular/core';
+import { TooltipComponent } from './tooltip/tooltip.component';
+
+@Component({
+  selector: 'app-index',
+  templateUrl: './index.component.html',
+  styleUrls: ['./index.component.css']
+})
+export class IndexComponent {
+  @ViewChild('tooltip') tooltip!: TooltipComponent;
+
+  showTooltip(event: MouseEvent, content: string) {
+    const x = event.clientX;
+    const y = event.clientY;
+    this.tooltip.content = content;
+    this.tooltip.showTooltip(x, y);
+  }
+}
+
