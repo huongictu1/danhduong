@@ -2,78 +2,138 @@ Hello everyone!
 
 I'm Huong, and on behalf of the Tien Son application team, I am here to present the Q4 2024 report of the IT department.
 
-My presentation consists of three parts: First, I will give an overview of the projects we undertook in 2024. Second, I will delve into the details of our largest project and highlight our key achievements. Lastly, I will outline our plans for 2025.
+My presentation consists of three parts: 
+- First, I review overview of the projects in 2024. 
+- Second, I pick one largest project and one typically activity to share details. 
+- Lastly, I will show our plans for 2025.
+
+
+
+
+
+
 
 So, let's begin.
 
-In 2024, we had four main tasks, with 50% of the projects completed, meaning two projects were finished, and two are still in progress.
+In 2024, we had four main jobs, with completed 50%, that's mean two projects were finished, and two are still in progress.
+The PSI project is a midterm project that we started in 2023 and is expected to continue until 2026. 
+In 2023, we trial two functions for the Tien Son factory, 
+and in 2024, we developed eight more functions, 
+Expand them to the Thang Long and Que Vo factories, with four functions each. 
 
-The PSI project is a midterm project that we started in 2023 and is expected to continue until 2026. In 2023, we tested two functions for the Tien Son factory, and in 2024, we added eight more functions, extending them to the Thang Long and Que Vo factories, with four functions each. In 2025, we plan to further expand these functions and develop four new ones.
+The Migrate Receiving system, we are working on with the TL team, started in December and is expected to be completed by January 2025.
+The two completed projects are the F&E system and the Migrate IDMS system, which we worked on with QV and TL, in-charged three and seven functions.
 
-The Migrate Receiving project, which we are working on with the TL factory development team, started in December and is expected to be completed by January 2025.
+One of our achievements for the year is reducing costs by reduce license due to the migration from MSSQL to PostgreSQL, 
+and the PSI system get third prize in the CVN awards.
 
-The two completed projects are the F&E system and the Migrate IDMS system, which we worked on with QV and TL, delivering three and seven functions respectively.
+Our goals for 2025 include expanding a total of 10 functions for each factory, 
+developing four new functions, 
+and completing the Receiving system by January 2025.
 
-One of our significant achievements for the year is reducing costs by eliminating one license due to the migration from MSSQL to PostgreSQL, and the PSI system winning third place in the CVN awards.
+Besides these main tasks, we have two activities: monitoring and training. 
+We organized a training session for 12 IT members 
+and integrated a monitoring system for Tien Son's systems, 
+creating a dashboard for visualization.
 
-Our goals for 2025 include expanding a total of 10 functions for each factory, developing four new functions, and completing the Receiving system by January 2025.
 
-Besides these main tasks, we conducted two activities: monitoring and training. We organized a training session for 12 IT members and integrated a monitoring system for Tien Son's systems, creating a dashboard for visualization.
 
-Next, I will present the actual results of one of our biggest achievements, the PSI project.
 
-As you know, the primary task of PDC1 is to ensure sufficient parts for production while minimizing inventory. Most of their work involves managing parts, which previously required collecting data from multiple sources and systems, including NPIS, HoanKiem, and others. This involved handling massive data from 27 different sources and using macros or Excel for output calculations. Due to external factors such as weather, power outages, or delivery delays, they often needed to change production plans, sometimes up to 10 times a day. They estimated about 10 troubles per year due to human error in updating conditions.
 
-The main challenges were the slow response time, high risk of quality issues due to dependency on human skills, and significant workload pressure.
 
-Since 2023, we have collaborated with PDC1 to innovate their operations with the PSI system, aligning with the top management's directive to promote smart factory projects and the KPI policy on inventory cycle reduction.
+The next, I will present the actual results of one of our biggest achievements, the PSI project.
 
-Over the past two years, we prioritized developing part control functions, expanding four functions for TL/QV. We continue to develop new functions this year.
+As you know, the main jobs of PDC1 is to prepare enough part for production and minimum inventory part. 
+Most of their workload is part control,
+to do that, they collect data from many data sources and systems, including NPIS, Hoan Kiem, and others. 
+There are 27 different sources input and using macros or Excel for output calculations. 
+Due to external factors such as weather, power cut, or delivery delays, 
+they often needed to change production plans, 
+sometimes up to 10 times a day. 
+They also estimated about 10 troubles per year due to human skill in update conditions.
 
-During the development of PSI, we faced several challenges, particularly with data volume and processing. For example, the TL factory's part simulation required handling 29 million input records, with output data reaching 120 million for long term and 160 million for short term, involving extensive calculations.
+The main challenges are very slow calculation, so can not take action before trouble happen, 
+high risk of quality depend on human skills, 
+and stress because high workload.
+Since 2023, we have collaborated with PDC1 to innovate operations with the PSI system, 
+that also TOP instruction to promote smart factory projects and the KPI policy on inventory turn over day.
 
-We implemented several improvements, including database optimization (using indexes and appropriate data types), parallel computing, and logical suggestions for PDC1.
+Over the past two years, we prioritized developing part control functions, 
+expanding four functions for TL/QV. 
+We continue to develop new functions this year.
 
-To date, we have achieved significant results: reducing the workforce by nine people, saving $57,000, and aiming for further reductions in the coming years. We have decreased space usage by 63%, achieved zero troubles, and reduced overtime by 53%.
+During the development of PSI, 
+we faced some challenges,  
+For example, the TL factory's part simulation required 29 million input records, 
+with output data reaching 120 million for long term 
+160 million for short term. It's big data.
+with calculation operator reaching 832 million. It's big processing.
 
-We improved computation speed by 97%, reduced prediction and control effort by 82%, and automated seven tasks while semi-automating four others.
+We implemented several improvements, 
+including database optimization (using indexes and appropriate data types), parallel computing, and logical suggestions for PDC1.
 
-Regarding file storage, we eliminated heavy file storage, over 1GB, and paper PO (55Kg/year).
+Until now, we have achieved some results: 
+- reducing 9 persons, same saving $57,000, 
+- and aiming for further reductions in the coming years 16 person this year. 
+- decreased space usage by 63%, 
+- achieved zero troubles, 
+- and reduced overtime by 53%.
+
+We improved computation speed by 97%, 
+reduced prediction and control effort by 82%, 
+and automated seven tasks while semi-automating four others.
+Regarding file storage, we remove heavy file storage, over 1GB, and paper PO (55Kg/year).
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 Next, I will discuss monitoring, a key activity this year.
+Typically, users encountering system errors and calling IT for help, which is slow and makes it hard to understand the user's situation.
+The problem are how to quickly support, how to understand user situation, the problem still continue or not.
+We aimed to change flow by immediately warning to developers of system errors, enabling us to understand user issues accurately and fix them promptly.
 
-Typically, user support involves users encountering system errors and calling IT for help, which is slow and makes it hard to understand the user's situation.
+We also have monitoring systems like Solar wind and Zabbix for infrastructure, 
+and some database monitoring, 
+but nothing for application level.
 
-We aimed to change this by immediately notifying developers of system errors, enabling us to understand user issues accurately and fix them promptly.
+Hung San SMF already built an ELK stack, so I trial by integrated for Tien Son systems, 
+our aiming for zero trouble and zero downtime.
+We expect the monitoring system to alert us to downtime, detect user errors, evaluate system performance, understand user situations, and unusual and slow points.
 
-We also have monitoring systems like Solarwind and Zabbix for infrastructure, and some database monitoring, but nothing for application level.
+Our detailed target include quick user support, 
+improved response times, 
+better user experience, 
+database optimization, 
+and enhanced security.
 
-Hung San SMF built an ELK stack, which I integrated for Tien Son systems, aiming for zero trouble and zero downtime.
+about process, we have integrated 10/11 Tien Son systems.
 
-We expect the monitoring system to alert us to downtime, detect user errors, evaluate system performance, understand user situations, and identify anomalies and slow points.
-
-Our detailed goals include quick user support, improved response times, better user experience, database optimization, and enhanced security.
-
-To date, we have integrated 10 out of 11 Tien Son systems.
-
-Key results include detecting and preventing two unauthorized access attempts related to CICE and Mold, investigating three data loss cases due to user actions, and fixing seven types of errors, from SQL queries to syntax errors.
-
-Most systems no longer need support, reducing support time by 70%, with only one system requiring support. Our goal is to reduce this to 0.5 systems needing support.
+the first, detecting and preventing two unauthorized access attempts related to CICE and Mold, 
+investigating three data loss cases due to user actions, 
+and fixing seven types of errors, from SQL queries to syntax errors.
+Most systems no longer need support, reducing support time by 70%, 
+with only one system requiring support. 
+Our target is to reduce this to 0.5 systems needing support.
 
 We estimate a response time reduction of 26% to 82%.
+However, one point needing improvement is the lack of a warning function. 
+I propose two options: Hung San researches and integrates a warning extension, or we combine with Grafana dashboard.
 
-However, one area needing improvement is the lack of a warning system. I propose two options: either Hung San researches and integrates a warning extension, or we collaborate with Grafana.
-
-Finally, I will outline our future work plans.
-
-First, we will continue with PSI, developing new functions and expanding to TL/QV.
-
+Finally, I will outline our next time plans.
+First, we will continue with PSI, not only developing new functions but also expanding to TL/QV.
 Second, we aim to complete the Receiving system by January.
-
 Starting in May, we will migrate HK with assembly, PQA, and logistics functions.
-
 Next, we will upgrade the OS for HK.
-
 Two maintenance projects for FA and Inhouse will conclude by the end of February.
 
 Thank you for your attention.
