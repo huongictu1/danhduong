@@ -1,0 +1,36 @@
+var builder = WebApplication.CreateBuilder(args);
+// Lấy giá trị biến môi trường từ IIS
+var env = Environment.GetEnvironmentVariable("APP_ENV") ?? "Production";
+// Add services to the container.
+builder.Configuration
+    .SetBasePath(Directory.GetCurrentDirectory())
+    .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
+    .AddJsonFile($"appsettings.{env}.json", optional: true, reloadOnChange: true)
+    .AddEnvironmentVariables();
+builder.Services.AddControllers();
+// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
+builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddSwaggerGen();
+
+var app = builder.Build();
+
+// Configure the HTTP request pipeline.
+if (app.Environment.IsDevelopment())
+{
+    app.UseSwagger();
+    app.UseSwaggerUI();
+}
+
+app.UseAuthorization();
+
+app.MapControllers();
+app.Use(async (context, next) =>
+{
+    var requestHost = context.Request.Host.Host;
+    var config = context.RequestServices.GetRequiredService<IConfiguration>();
+    // Ghi log để kiểm tra
+    Console.WriteLine($"Serving site: {requestHost} {env}");
+
+    await next();
+});
+app.Run();
