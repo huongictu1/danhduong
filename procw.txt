@@ -1,0 +1,72 @@
+public async Task ExecuteProcInsertPicProblemAsync()
+{
+    using var transaction = await _dbContext.Database.BeginTransactionAsync();
+    try
+    {
+        await _dbContext.PdcPicDetailProblems.ExecuteDeleteAsync(); // Xóa dữ liệu cũ
+
+        var currentDate = DateTime.UtcNow.Date;
+        var startTime = currentDate.AddHours(7).AddMinutes(30);
+        var endTime = startTime.AddDays(1);
+
+        var mauDoList = await _dbContext.PdcReceiveParts
+            .Where(prp => prp.DateDelivery + prp.TimeDelivery > startTime.ToString("yyyyMMddHHmmss") &&
+                          prp.DateDelivery + prp.TimeDelivery < endTime.ToString("yyyyMMddHHmmss") &&
+                          (prp.DifferQty != 0 || prp.Reason != null) &&
+                          (prp.Reason.StartsWith("1.") || prp.Reason.StartsWith("5.") ||
+                           prp.Reason.StartsWith("6.") || prp.Reason.StartsWith("8.") ||
+                           prp.Reason.StartsWith("9.") || prp.Reason.StartsWith("10.") ||
+                           prp.Reason.StartsWith("11.")) &&
+                          prp.LeaderConfirm == null &&
+                          prp.Status == "0")
+            .Join(_dbContext.PdcGateVendorPics,
+                a => new { a.Vendor, GateName = a.Location },
+                t => new { t.Vendor, t.GateName },
+                (a, t) => new PdcPicDetailProblem
+                {
+                    UserEntry = "HKS",
+                    Vendor = a.Vendor,
+                    Gate = a.Location,
+                    Pic = t.Pic.Trim(),
+                    LotNo = a.TimeDelivery,
+                    Color = "RED"
+                })
+            .ToListAsync();
+
+        await _dbContext.PdcPicDetailProblems.AddRangeAsync(mauDoList);
+        await _dbContext.SaveChangesAsync();
+
+        var mauTimList = await _dbContext.PdcReceiveParts
+            .Where(prp => prp.DateDelivery + prp.TimeDelivery > startTime.ToString("yyyyMMddHHmmss") &&
+                          prp.DateDelivery + prp.TimeDelivery < endTime.ToString("yyyyMMddHHmmss") &&
+                          (prp.DifferQty != 0 || prp.Reason != null) &&
+                          (prp.Reason.StartsWith("2.") || prp.Reason.StartsWith("3.") ||
+                           prp.Reason.StartsWith("4.") || prp.Reason.StartsWith("7.") ||
+                           prp.Reason.StartsWith("12.") || prp.Reason.StartsWith("13.")) &&
+                          prp.LeaderConfirm == null &&
+                          prp.Status == "0")
+            .Join(_dbContext.PdcGateVendorPics,
+                a => new { a.Vendor, GateName = a.Location },
+                t => new { t.Vendor, t.GateName },
+                (a, t) => new PdcPicDetailProblem
+                {
+                    UserEntry = "HKS",
+                    Vendor = a.Vendor,
+                    Gate = a.Location,
+                    Pic = t.Pic.Trim(),
+                    LotNo = a.TimeDelivery,
+                    Color = "VIOLET"
+                })
+            .ToListAsync();
+
+        await _dbContext.PdcPicDetailProblems.AddRangeAsync(mauTimList);
+        await _dbContext.SaveChangesAsync();
+
+        await transaction.CommitAsync();
+    }
+    catch (Exception)
+    {
+        await transaction.RollbackAsync();
+        throw;
+    }
+}
