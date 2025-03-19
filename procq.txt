@@ -1,0 +1,115 @@
+public async Task ExecuteProcPdcLotControlAsync()
+{
+    using var transaction = await _dbContext.Database.BeginTransactionAsync();
+    try
+    {
+        var currentDate = DateTime.UtcNow.Date;
+        var startTime = currentDate.AddHours(7).AddMinutes(30); // 07:30 AM
+        var endTime = startTime.AddDays(1); // 07:30 AM ngày tiếp theo
+
+        // **Lấy danh sách cần insert**
+        var newLots = await _dbContext.PdcReceiveParts
+            .Where(p => p.Status == "0" &&
+                        p.DateDelivery + p.TimeDelivery > startTime.ToString("yyyyMMddHHmmss") &&
+                        p.DateDelivery + p.TimeDelivery < endTime.ToString("yyyyMMddHHmmss") &&
+                        p.TimeDelivery.Substring(2, 2).CompareTo("00") >= 0 &&
+                        p.TimeDelivery.Substring(2, 2).CompareTo("59") <= 0 &&
+                        p.TimeDelivery.Substring(0, 2).CompareTo("00") >= 0 &&
+                        p.TimeDelivery.Substring(0, 2).CompareTo("23") <= 0 &&
+                        p.TimeDelivery.Substring(4, 2).CompareTo("00") >= 0 &&
+                        p.TimeDelivery.Substring(4, 2).CompareTo("59") <= 0 &&
+                        !_dbContext.PdcLotControls
+                            .Any(c => c.Vendor == p.Vendor &&
+                                      c.DateDelivery == p.DateDelivery &&
+                                      c.TimeDelivery == p.TimeDelivery &&
+                                      c.Gate == p.Location))
+            .Select(p => new PdcLotControl
+            {
+                DateDelivery = p.DateDelivery,
+                TimeDelivery = p.TimeDelivery,
+                Vendor = p.Vendor,
+                Gate = p.Location,
+                Shift = _dbContext.RecvFunGetRecvShift0730(p.TimeDelivery) // Giả sử có function này
+            })
+            .Distinct()
+            .ToListAsync();
+
+        if (newLots.Any())
+        {
+            await _dbContext.PdcLotControls.AddRangeAsync(newLots);
+            await _dbContext.SaveChangesAsync();
+        }
+
+        // **Cập nhật door**
+        var lotControlsToUpdate = await _dbContext.PdcLotControls
+            .Where(a => a.Door == null)
+            .ToListAsync();
+
+        foreach (var lot in lotControlsToUpdate)
+        {
+            var subGate = await _dbContext.PdcGateVendors
+                .Where(b => b.Vendor == lot.Vendor && b.GateName == lot.Gate)
+                .Select(b => b.SubGate)
+                .FirstOrDefaultAsync();
+
+            if (subGate != null)
+            {
+                lot.Door = subGate;
+            }
+        }
+
+        await _dbContext.SaveChangesAsync();
+
+        // **Cập nhật ins_status = 0**
+        await _dbContext.PdcLotControls
+            .ExecuteUpdateAsync(setters => setters.SetProperty(t => t.InsStatus, 0));
+
+        // **Cập nhật ins_status = 1**
+        var matchingEntries = await _dbContext.PdcReceiveParts
+            .Where(p => p.DateDelivery + p.TimeDelivery >= startTime.ToString("yyyyMMddHHmm") &&
+                        p.DateDelivery + p.TimeDelivery <= endTime.ToString("yyyyMMddHHmm") &&
+                        p.Inspection == "INS" &&
+                        p.Status == "0")
+            .Select(p => new { p.DateDelivery, p.TimeDelivery, p.Vendor, p.Location })
+            .Distinct()
+            .ToListAsync();
+
+        foreach (var lot in _dbContext.PdcLotControls)
+        {
+            if (matchingEntries.Any(m => m.DateDelivery == lot.DateDelivery &&
+                                         m.TimeDelivery == lot.TimeDelivery &&
+                                         m.Vendor == lot.Vendor &&
+                                         m.Location == lot.Gate))
+            {
+                lot.InsStatus = 1;
+            }
+        }
+
+        await _dbContext.SaveChangesAsync();
+
+        // **Cập nhật plan_compare**
+        var lotsToUpdatePlan = await _dbContext.PdcLotControls
+            .Where(t => t.PlanCompare == null &&
+                        t.TimeDelivery.Substring(2, 2).CompareTo("00") >= 0 &&
+                        t.TimeDelivery.Substring(2, 2).CompareTo("59") <= 0 &&
+                        t.TimeDelivery.Substring(0, 2).CompareTo("00") >= 0 &&
+                        t.TimeDelivery.Substring(0, 2).CompareTo("23") <= 0 &&
+                        t.TimeDelivery.Substring(4, 2).CompareTo("00") >= 0 &&
+                        t.TimeDelivery.Substring(4, 2).CompareTo("59") <= 0)
+            .ToListAsync();
+
+        foreach (var lot in lotsToUpdatePlan)
+        {
+            lot.PlanCompare = DateTime.ParseExact(lot.DateDelivery + lot.TimeDelivery, "yyyyMMddHHmmss", null);
+        }
+
+        await _dbContext.SaveChangesAsync();
+
+        await transaction.CommitAsync();
+    }
+    catch (Exception)
+    {
+        await transaction.RollbackAsync();
+        throw;
+    }
+}
