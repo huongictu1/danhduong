@@ -1,452 +1,164 @@
--- DROP PROCEDURE recv.proc_update_plan_pdc_ts_old();
+-- DROP PROCEDURE recv.proc_pdc_lot_control();
 
-CREATE OR REPLACE PROCEDURE recv.proc_update_plan_pdc_ts_old()
+CREATE OR REPLACE PROCEDURE recv.proc_pdc_lot_control()
  LANGUAGE plpgsql
 AS $procedure$
-declare
-v_differ numeric;
---v_shift character varying;
+--declare
+
 begin
---select * into v_shift from fun_get_shift_0730();
---Update
---IJ
- update recv.pdc_receive_part p1
-     set (qty_plan, po_status, status, inspection, ecn, no_draw, gate) =
-         (select distinct qty_plan::numeric,
-                          po_status,
-                          (case
-                            when po_status in ('DL', 'DC') then 1
-                            else 0
-                          end),
-		  				  inspection,
-                          trim(ecn),
-                          no_draw,
-                          p2.loc
-            from npis_pdc_tbl_plan p2
-           where p1.part_no = p2.part_no
-             and p1.vendor = p2.vendor
-             and p1.delivery_key =
-                 trim(p2.no_po) || trim(p2.mk_po_chk_digit)
-             and p1.date_delivery = p2.date_delv
-             and p1.time_delivery = p2.time_delv
-             and p1.location = substr(p2.loc, 1)),
-         date_update = now(),
-         user_update = 'SYSTEM1'
-   where p1.date_delivery >= to_char(CURRENT_DATE, 'yyyymmdd')
-     and p1.time_receive is null
-     and exists --nhung con nao ton tai o bang pdc_tbl_plan
-   (select 1
-            from npis_pdc_tbl_plan p3
-           where p1.part_no = p3.part_no
-             and p1.vendor = p3.vendor
-             and p1.delivery_key = trim(p3.no_po) || trim(p3.mk_po_chk_digit)
-             and p1.date_delivery = p3.date_delv
-             and p1.time_delivery = p3.time_delv
-             and p1.location = substr(p3.loc, 1));
-			  commit;
 --Insert
- insert into recv.pdc_receive_part
-    (user_entry,
-     vendor,
-     delivery_key,
-     part_no,
-     qty_plan,
-     date_Delivery,
+insert into recv.pdc_lot_control (date_delivery,
      time_delivery,
-     location,
-     dt_entry,
-     status,
-     po_status,
-	 inspection,
-     ecn,
-     no_draw,
+     vendor,
      gate,
-     subfix_plan,     
-     cd_destin)    
-    select distinct 'SYSTEM',
-                    t1.vendor,
-                    trim(t1.no_po) || trim(t1.mk_po_chk_digit),
-                    t1.part_no,
-                    t1.qty_plan::numeric,
-                    t1.date_delv,
-                    t1.time_delv,
-                    upper(substr(t1.loc, 1)),
-                    to_date(dt_entry, 'yyyymmddhh24miss'),
-                    (Case
-                      When po_status in ('DC', 'DL') Then
-                       1
-                      Else
-                       0
-                    End),
-                    po_status,
-                    inspection,
-                    trim(ecn),
-                    no_draw,
-                    t1.loc,
-                    t1.subfix_plan,                   
-                    cd_destin
-      from npis_pdc_tbl_plan t1
-     Where date_delv || time_delv >=
-           to_char(CURRENT_DATE - 1, 'yyyymmddhh24miss')	
-       and po_status <> '%J'
-       and time_delv is not null	
-	  and (substr(loc, 1, 2) = 'TS' or (loc = 'CEC1' and cd_destin = '984G')) --TS:
-       and not exists
-     (select *
-              from recv.pdc_receive_part p1
-             where p1.date_delivery = t1.date_delv
-               and trim(t1.no_po) || trim(t1.mk_po_chk_digit) = p1.delivery_key
-               and substr(t1.loc, 1) = p1.location
-               and t1.part_no = p1.part_no
-               and t1.qty_plan::numeric = p1.qty_plan
-               and t1.time_delv = p1.time_delivery
-               and t1.vendor = p1.vendor          
-            )
-       And qty_plan::numeric <> 0;
-	    commit;
---LBP
-Update recv.pdc_receive_part p1
-     Set (delivery_key,
-          qty_plan,
-          po_status,
-          status,
-          ecn,
-          no_draw,
-          cd_destin) =
-         (Select Distinct trim(p2.no_po) || Trim(p2.mk_po_chk_digit),
-                          qty_plan::numeric,
-                          po_status,
-                          (Case
-                            When po_status In ('DL', 'DC') Then
-                             1
-                            Else
-                             0
-                          End),
-                          trim(ecn),
-                          no_draw,
-                          cd_destin
-            From npis_qv_pdc_tbl_plan  p2,
-                 (select distinct trim(p3.no_po) || Trim(p3.mk_po_chk_digit) do_key,
-                                  max(p3.date_entry) date_entry
-                    from npis_qv_pdc_tbl_plan p3
-                   group by trim(p3.no_po) || Trim(p3.mk_po_chk_digit)) p3
-           where trim(p2.no_po) || Trim(p2.mk_po_chk_digit) = p3.do_key
-             and p2.date_entry = p3.date_entry
-             and p1.part_no = p2.part_no
-             And p1.vendor = p2.vendor
-             And p1.delivery_key =
-                 trim(p2.no_po) || Trim(p2.mk_po_chk_digit)
-             And p1.date_delivery = p2.date_delv
-             And p1.time_delivery = p2.time_delv
-             And p1.location = p2.loc         
-          ),
-         date_update =  now(),
-         user_update = 'SYSTEM1'
-   Where p1.fac_code = 'VQ'
-     and p1.date_delivery >= to_char(CURRENT_DATE, 'yyyymmdd')
-     and p1.time_receive is null
-     And Exists
-   (Select count(*)
-            From npis_qv_pdc_tbl_plan p
-           Where p1.part_no = p.part_no
-             And p1.vendor = p.vendor
-             And p1.delivery_key = Trim(p.no_po) || Trim(p.mk_po_chk_digit)
-             And p1.date_delivery = p.date_delv
-             And p1.time_delivery = p.time_delv
-             And p1.location = p.loc         
-           group by Trim(p.no_po) || Trim(p.mk_po_chk_digit)
-          having count(*) > 0);
-  commit;
-
- INSERT INTO recv.pdc_receive_part
-    (date_entry,
-     user_entry,
-     vendor,
-     delivery_key,
-     part_no,
-     qty_plan,
-     date_delivery,
-     time_delivery,
-     location,
-     dt_entry,
-     status,
-     po_status,
-     ecn,
-     no_draw,
-     cd_destin,
-     subfix_plan,     
-     fac_code)
-    select distinct now(),
-                    'QV_EUC',
-                    t.vendor,
-                    trim(t.no_po) || trim(t.mk_po_chk_digit),
-                    t.part_no,
-                    t.qty_plan::numeric,
-                    t.date_delv,
-                    t.time_delv,
-                    t.loc,
-                     to_date(dt_entry, 'yyyymmddhh24miss'),
-                    (Case
-                      When po_status in ('DC', 'DL') Then
-                       1
-                      Else
-                       0
-                    End),
-                    po_status,
-                    trim(ecn),
-                    no_draw,
-                    cd_destin,
-                    subfix_plan,                   
-                    'VQ'
-      from npis_qv_pdc_tbl_plan t
-     where to_date(t.date_delv, 'yyyymmdd') >=
-           to_date(to_char(CURRENT_DATE - 3, ' yyyymmdd'), 'yyyymmdd')
-       and po_status <> '%J'
-       and time_delv is not null        
-       and not exists
-     (select *
-              from recv.pdc_receive_part p
-             where p.fac_code = 'VQ'
-               and p.date_delivery = t.date_delv
-               and trim(t.no_po) || trim(t.mk_po_chk_digit) = p.delivery_key
-               and t.loc = p.location
-               and t.part_no = p.part_no
-               and t.qty_plan::numeric = p.qty_plan::numeric
-               and t.time_delv = p.time_delivery
-               and t.vendor = p.vendor)
-       And t.qty_plan::numeric <> 0;
-
-  commit;
-
--- SPECIAL part
- Insert Into recv.pdc_receive_part
-    (user_entry,
-     vendor,
-     delivery_key,
-     part_no,
-     qty_plan,
-     date_delivery,
-	 time_delivery,
-     location,
-     status,
-     po_status, 
-	 inspection,
-     ecn,
-     invoice_no,
-	part_type)
-    Select Distinct 'SPECIAL',
-                    t.cd_sply,
-                    t.no_po || t.mk_po_chk_digit,
-                    t.no_parts,
-                    t.qt_ord,
-                    t.dt_delv,
-					t.tm_delv,
-                    upper(substr(t.cd_delv_place, 1)),
-                    (Case
-                      When t.nm_argmet_stat In ('DC', 'DL', 'CL') Then
-                       1
-                      Else
-                       0
-                    End),
-                    t.nm_argmet_stat,
-					t.cd_insp_type,
-                    Trim(t.cd_chg_hist_all),
-                    t.no_invoice,
-					'Special'
-      From public.npis_wbgjt300 t
-     where -- (substr(cd_delv_place, 1, 2) = 'TL' or cd_delv_place='CEC')
-	  (substr(cd_delv_place, 1, 2) = 'TS' or cd_delv_place='CEC1')    -- TS:
-   And nm_argmet_stat In ('PO','AO')
-    And t.qt_ord <> 0
-   And (cd_chg_hist_all  Like '%TVP%' Or cd_chg_hist_all  Like '%ERI%' Or cd_chg_hist_all  Like 'AAA%' Or cd_chg_hist_all  Like  'BBB%' Or cd_chg_hist_all  Like  'MT%' )
-   And dt_delv >= to_char(now(), 'yyyymmdd')
-       And Not Exists (Select *
-              From recv.pdc_receive_part p
-             Where p.date_delivery = t.dt_delv
-               And p.delivery_key = t.no_po || t.mk_po_chk_digit
-               And substr(p.location, 1) = upper(substr(t.cd_delv_place, 1))
-               And p.part_no = t.no_parts
-               And p.qty_plan = t.qt_ord
-               And p.vendor = t.cd_sply
-               And p.po_status=t.nm_argmet_stat);
-	commit;
-	--Update door
- Update recv.pdc_receive_part a
+	 shift)   
+select distinct p.date_delivery,
+     p.time_delivery,
+     p.vendor,
+     p.location,
+	 recv.fun_get_recv_shift_0730(p.time_delivery)
+	 from recv.pdc_receive_part p
+     Where p.date_delivery || p.time_delivery >
+           to_char(CURRENT_DATE, 'yyyymmdd') || '073000'
+       And p.date_delivery || p.time_delivery <
+           to_char(CURRENT_DATE + 1, 'yyyymmdd') || '073000'
+       And p.status = '0'
+       and substr(p.time_delivery, 3, 2) >= '00'
+       and substr(p.time_delivery, 3, 2) <= '59'
+       and substr(p.time_delivery, 1, 2) >= '00'
+       and substr(p.time_delivery, 1, 2) <= '23'
+       and substr(p.time_delivery, 5, 2) >= '00'
+       and substr(p.time_delivery, 5, 2) <= '59'
+       And Not Exists (Select 1
+              From recv.pdc_lot_control c
+             Where c.vendor = p.vendor
+               And c.date_delivery = p.date_delivery
+               And c.time_delivery = p.time_delivery
+               And c.gate = p.location);    
+  commit; 
+  
+  --2. Update Sub Door
+  Update recv.pdc_lot_control a
      Set door =
          (Select distinct b.sub_gate
             From recv.pdc_gate_vendor b
            Where b.vendor = a.vendor
              And b.gate_Name = a.gate)
    Where door is null;
-   commit;
---Update differ
- Update recv.pdc_receive_part
-     Set differ_qty = act_qty - qty_plan
-   Where act_qty Is Not Null
-     And date_delivery >= to_char(CURRENT_DATE, 'yyyymmdd');
-	  commit;
---Update time_red
- select time_differ::int into v_differ From recv.pdc_time_differ;
- 
-    update recv.pdc_receive_part t1
-       Set time_red = to_timestamp(date_delivery || time_delivery,
-                              'yyyymmddhh24miss') + (v_differ ||' minutes')::interval
-     Where time_red is null
-       And time_delivery Is Not Null
-       and delivery_key is not null
-       and length(date_delivery || time_delivery) = 14
-       and date_delivery >= to_char(CURRENT_DATE, 'yyyymmdd')
-     --  and date_delivery <= to_char(CURRENT_DATE +10, 'yyyymmdd')
-       and substr(t1.time_delivery, 3, 2) >= '00'
-       and substr(t1.time_delivery, 3, 2) <= '59'
-       and substr(t1.time_delivery, 1, 2) >= '00'
-       and substr(t1.time_delivery, 1, 2) <= '23'
-       and substr(t1.time_delivery, 5, 2) >= '00'
-       and substr(t1.time_delivery, 5, 2) <= '59';
-	    commit;
-		
---UPDATE LA INS
- update recv.pdc_receive_part t1
-     set inspection = 'INS'
-   where t1.status= '0'
-   	-- and t1.inspection is null
-     and t1.date_delivery >= to_char(CURRENT_DATE, 'yyyymmdd')
-     and t1.part_no in (select m1.no_parts
-                         from npis_wbgjt007 m1
-                        where m1.cf_insp_type <> 'A'
-                          and m1.cf_insp_type = 'J'
-                          and m1.cr_acptc_bal >= 1
-                          and m1.cd_chg_hist_all = t1.ecn
-                          and m1.no_parts = t1.part_no
-                          and t1.status = '0');
-  commit;
-  -- Case 2
-  update recv.pdc_receive_part t1
-     set inspection = 'INS'
-   where t1.status = '0'
-  -- and t1.inspection is null
-     and t1.date_delivery >=to_char(CURRENT_DATE, 'yyyymmdd')
-     and t1.part_no in (select m1.no_parts
-                         from npis_wbgjt007 m1
-                        where m1.cf_insp_type = 'A'
-                          and m1.cd_chg_hist_all = t1.ecn
-                          and m1.no_parts = t1.part_no
-                          and t1.status = '0');
-  commit;
-  
---UPDATE la LES
-  update recv.pdc_receive_part  t1
-     set inspection = 'LES'
-   where t1.status = '0'
-  -- and t1.inspection is null
-     and t1.date_delivery >= to_char(CURRENT_DATE, 'yyyymmdd')
-     and t1.part_no in (select m1.no_parts
-                         from npis_wbgjt007 m1
-                        where m1.cf_insp_type <> 'A'
-                          and (m1.cf_insp_type <> 'J' or m1.cr_acptc_bal < 1)
-                          and m1.cd_chg_hist_all = t1.ecn
-                          and m1.no_parts = t1.part_no
-                          and t1.status = '0');     
-  commit;
-  
-  --Update status=0
-  update recv.pdc_receive_part  t1
-     set  status = '0' 
-   where exists 
-   (select 1
-            from npis_pdc_tbl_plan p1
-           where p1.po_status not in ('DC', 'DL')
-			and t1.part_no = p1.part_no
-             and t1.vendor = p1.vendor
-             and t1.delivery_key = trim(p1.no_po) || trim(p1.mk_po_chk_digit)
-             and t1.date_delivery = p1.date_delv
-             and t1.time_delivery = p1.time_delv
-             and t1.location = substr(p1.loc, 1));
-			  commit;
-     --Update status=1
-  update recv.pdc_receive_part  t1
-     set  status = '1' 
-   where exists 
-   (select 1
-            from npis_pdc_tbl_plan p1
-           where p1.po_status in ('DC', 'DL')
-			and t1.part_no = p1.part_no
-             and t1.vendor = p1.vendor
-             and t1.delivery_key = trim(p1.no_po) || trim(p1.mk_po_chk_digit)
-             and t1.date_delivery = p1.date_delv
-             and t1.time_delivery = p1.time_delv
-             and t1.location = substr(p1.loc, 1));
-			  commit;
-			  
---Insert PDC_MQA_check
- insert Into recv.pdc_mqa_check
-    (user_entry,     
-     vendor,
-     date_delivery,
-     time_delivery,
-     part_no,
-     delivery_key,
-     location,    
-     shift,
-     plan_qty)
-    select 'System',           
-           vendor,
-           date_delivery,
-           time_delivery,
-           part_no,
-           delivery_key,
-           location,          
-           recv.fun_get_recv_shift_0730(substr(time_delivery,1,4)),
-           qty_plan
-      From recv.pdc_receive_part a
-     Where a.date_delivery = to_char(now(), 'yyyymmdd')
-       And a.inspection = 'INS'
-       AND a.status = '0'
-       and substr(a.time_delivery, 3, 2) >= '00'
-       and substr(a.time_delivery, 3, 2) <= '59'
-       and substr(a.time_delivery, 1, 2) >= '00'
-       and substr(a.time_delivery, 1, 2) <= '23'
-       and substr(a.time_delivery, 5, 2) >= '00'
-       and substr(a.time_delivery, 5, 2) <= '59'
-       and not exists
-     (select delivery_key
-              From recv.pdc_mqa_check b
-             Where b.date_delivery = to_char(now(), 'yyyymmdd')
-               and b.delivery_key = a.delivery_key);
   Commit;
-  --Update pdc_mqa_check status=0
-  update  recv.pdc_mqa_check t1
-  set status='0'
-  where exists 
-   (select 1
-            from recv.pdc_receive_part p1
-           where t1.status='0'
-			 and t1.part_no = p1.part_no
-             and t1.vendor = p1.vendor
-             and t1.delivery_key = p1.delivery_key
-             and t1.date_delivery = p1.date_delivery
-             and t1.time_delivery = p1.time_delivery
-             and t1.location =  p1.location);
-	commit;
-	
-	 --Update pdc_mqa_check status=1
-  update  recv.pdc_mqa_check t1
-  set status='1' 
-  where exists 
-   (select 1
-            from recv.pdc_receive_part p1
-           where t1.status='1'
-			 and t1.part_no = p1.part_no
-             and t1.vendor = p1.vendor
-             and t1.delivery_key = p1.delivery_key
-             and t1.date_delivery = p1.date_delivery
-             and t1.time_delivery = p1.time_delivery
-             and t1.location =  p1.location);
-	commit;
-	
-	call recv.proc_pdc_lot_control();
-	call recv.proc_insert_pic_problem();
-	
+  
+  --Update status
+   Update recv.pdc_lot_control Set ins_status = 0;
+   /* Where date_delivery || Substr(time_delivery, 1, 4) >=
+                         to_char(CURRENT_DATE, 'yyyymmdd') || '073000'
+                     And Date_Delivery || Substr(time_delivery, 1, 4) <=
+                         to_char(CURRENT_DATE + 1, 'yyyymmdd') || '073000';*/
+  Commit;
+  
+  Update recv.pdc_lot_control a
+     Set ins_status = 1
+   Where Exists (Select *
+            From (Select Distinct p.time_delivery,
+                                  p.date_delivery,
+                                  p.vendor,
+                                  p.location
+                    From recv.pdc_receive_part p
+                   Where date_delivery || Substr(time_delivery, 1, 4) >=
+                         to_char(CURRENT_DATE, 'yyyymmdd') || '073000'
+                     And Date_Delivery || Substr(time_delivery, 1, 4) <=
+                         to_char(CURRENT_DATE + 1, 'yyyymmdd') || '073000'
+                     And inspection = 'INS'
+                     And status = '0') b
+           Where a.date_delivery = b.date_delivery
+             And a.time_delivery = b.time_delivery
+             And a.vendor = b.vendor
+             And a.gate = b.location);
+  Commit;
+  
+  --Update Plan
+   Update recv.pdc_lot_control t
+       Set plan_compare = to_timestamp(date_delivery || time_delivery,
+                                  'yyyymmddhh24miss')
+     Where t.plan_compare Is null
+       and substr(t.time_delivery, 3, 2) >= '00'
+       and substr(t.time_delivery, 3, 2) <= '59'
+       and substr(t.time_delivery, 1, 2) >= '00'
+       and substr(t.time_delivery, 1, 2) <= '23'
+       and substr(t.time_delivery, 5, 2) >= '00'
+       and substr(t.time_delivery, 5, 2) <= '59';
+    Commit;
+ 
+end;
+$procedure$
+;
+-- DROP PROCEDURE recv.proc_insert_pic_problem();
+
+CREATE OR REPLACE PROCEDURE recv.proc_insert_pic_problem()
+ LANGUAGE plpgsql
+AS $procedure$
+--declare
+
+begin
+delete from recv.pdc_pic_detail_problem;
+commit;
+--Mau do
+insert into recv.pdc_pic_detail_problem(user_entry, vendor, gate,pic,lot_no,color)  
+select distinct 'HKS', a.vendor,a.location,trim(t.pic),a.time_delivery,'RED'        
+    from     
+       (
+ Select *
+        From recv.pdc_receive_part prp                      
+       Where  prp.date_delivery || prp.time_delivery >
+           to_char(CURRENT_DATE, 'yyyymmdd') || '073000'
+       And prp.date_delivery || prp.time_delivery <
+           to_char(CURRENT_DATE + 1, 'yyyymmdd') || '073000'             
+         And (prp.differ_qty <> 0 or prp.reason is not null)          
+        And (prp.reason like '1.%' or prp.reason like '5.%'  
+        or prp.reason like '6.%' or prp.reason like '8.%' 
+        or prp.reason like '9.%' or prp.reason like '10.%' or prp.reason like '11.%') 
+         And prp.leader_confirm Is Null                                                                            
+         And prp.status = '0'                    
+      union                                  
+        Select *
+        From recv.pdc_receive_part    prp     
+       Where  prp.date_delivery || prp.time_delivery >
+           to_char(CURRENT_DATE, 'yyyymmdd') || '073000'
+       And prp.date_delivery || prp.time_delivery <
+           to_char(CURRENT_DATE + 1, 'yyyymmdd') || '073000'                                                  
+         And TO_CHAR(prp.time_red, 'yyyymmddhh24miss') < TO_CHAR(NOW(), 'yyyymmddhh24miss')                             
+         and prp.act_qty is null                                
+         And prp.status = '0') a ,recv.pdc_gate_vendor_pic t              
+        where a.vendor=t.vendor and a.location=t.gate_name;  
+		commit;
+		--Mau tim
+	insert into recv.pdc_pic_detail_problem(user_entry, vendor, gate,pic,lot_no,color)  
+select distinct 'HKS', a.vendor,a.location,trim(t.pic),a.time_delivery,'VIOLET'        
+    from     
+       (
+ Select *
+        From recv.pdc_receive_part prp                      
+       Where  prp.date_delivery || prp.time_delivery >
+           to_char(CURRENT_DATE, 'yyyymmdd') || '073000'
+       And prp.date_delivery || prp.time_delivery <
+           to_char(CURRENT_DATE + 1, 'yyyymmdd') || '073000'             
+         And (prp.differ_qty <> 0 or prp.reason is not null)          
+        And (prp.reason like '2.%' or prp.reason like '3.%'  
+        or prp.reason like '4.%' or prp.reason like '7.%' 
+        or prp.reason like '12.%' or prp.reason like '13.%') 
+         And prp.leader_confirm Is Null                                                                            
+         And prp.status = '0'                    
+      union                                  
+        Select *
+        From recv.pdc_receive_part    prp     
+       Where  prp.date_delivery || prp.time_delivery >
+           to_char(CURRENT_DATE, 'yyyymmdd') || '073000'
+       And prp.date_delivery || prp.time_delivery <
+           to_char(CURRENT_DATE + 1, 'yyyymmdd') || '073000'                                                  
+         And TO_CHAR(prp.time_red, 'yyyymmddhh24miss') < TO_CHAR(NOW(), 'yyyymmddhh24miss')                             
+         and prp.act_qty is null                                
+         And prp.status = '0') a ,recv.pdc_gate_vendor_pic t              
+        where a.vendor=t.vendor and a.location=t.gate_name;  
+		commit;	
 end;
 $procedure$
 ;
