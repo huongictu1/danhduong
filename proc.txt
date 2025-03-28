@@ -1,5 +1,71 @@
 -- DROP PROCEDURE recv.proc_pdc_lot_control();
+using System;
+using System.Diagnostics;
+using PdfSharp.Drawing;
+using PdfSharp.Pdf;
+using MigraDoc.DocumentObjectModel;
+using MigraDoc.Rendering;
+using MigraDoc.DocumentObjectModel.Tables;
 
+class Program
+{
+    static void Main()
+    {
+        // Tạo tài liệu PDF
+        Document document = new Document();
+        Section section = document.AddSection();
+        
+        // Định dạng tiêu đề
+        Paragraph title = section.AddParagraph("BAO CAO VAN DE NHAN HANG\nRECEIVING PROBLEM REPORT");
+        title.Format.Font.Size = 14;
+        title.Format.Font.Bold = true;
+        title.Format.Alignment = ParagraphAlignment.Center;
+        section.AddParagraph("\n");
+
+        // Tạo bảng chính
+        Table table = section.AddTable();
+        table.Borders.Width = 0.5;
+
+        // Định nghĩa các cột
+        Column col1 = table.AddColumn("4cm");
+        Column col2 = table.AddColumn("3cm");
+        Column col3 = table.AddColumn("3cm");
+        Column col4 = table.AddColumn("3cm");
+
+        // Thêm hàng tiêu đề
+        Row row = table.AddRow();
+        row.Cells[0].AddParagraph("Nha cung cap (Supplier Name)");
+        row.Cells[1].AddParagraph("So Invoice (Invoice No)");
+        row.Cells[2].AddParagraph("Ma linh kien (Part No)");
+        row.Cells[3].AddParagraph("So luong (Delivery Order)");
+
+        // Dữ liệu mẫu
+        AddDataRow(table, "V143", "QC7-9486-000", "0", "710");
+        AddDataRow(table, "", "QC7-9487-000", "0", "700");
+        AddDataRow(table, "", "QC7-9488-000", "0", "680");
+
+        // Render PDF
+        PdfDocumentRenderer pdfRenderer = new PdfDocumentRenderer(true);
+        pdfRenderer.Document = document;
+        pdfRenderer.RenderDocument();
+
+        string filename = "Receiving_Problem_Report.pdf";
+        pdfRenderer.PdfDocument.Save(filename);
+        Process.Start(new ProcessStartInfo(filename) { UseShellExecute = true });
+
+        Console.WriteLine("PDF đã được tạo thành công!");
+    }
+
+    // Hàm thêm dòng dữ liệu vào bảng
+    static void AddDataRow(Table table, string supplier, string partNo, string plan, string actual)
+    {
+        Row row = table.AddRow();
+        row.Cells[0].AddParagraph(supplier);
+        row.Cells[1].AddParagraph(partNo);
+        row.Cells[2].AddParagraph(plan);
+        row.Cells[3].AddParagraph(actual);
+    }
+}
 CREATE OR REPLACE PROCEDURE recv.proc_pdc_lot_control()
  LANGUAGE plpgsql
 AS $procedure$
