@@ -1,3 +1,87 @@
+using PdfSharpCore.Drawing;
+using PdfSharpCore.Pdf;
+using System;
+using System.IO;
+
+class Program
+{
+    static void Main()
+    {
+        // Tạo file PDF mới
+        PdfDocument document = new PdfDocument();
+        document.Info.Title = "Receiving Problem Report";
+
+        // Tạo trang mới
+        PdfPage page = document.AddPage();
+        XGraphics gfx = XGraphics.FromPdfPage(page);
+        XFont titleFont = new XFont("Arial", 14, XFontStyle.Bold);
+        XFont headerFont = new XFont("Arial", 12, XFontStyle.Bold);
+        XFont contentFont = new XFont("Arial", 10, XFontStyle.Regular);
+
+        // Vẽ tiêu đề
+        gfx.DrawString("BAO CAO VAN DE NHAN HANG", titleFont, XBrushes.Black, new XPoint(150, 40));
+        gfx.DrawString("RECEIVING PROBLEM REPORT", titleFont, XBrushes.Black, new XPoint(155, 60));
+
+        // Vẽ thông tin chung
+        gfx.DrawString("Date Delivery (Received date): 20250326", contentFont, XBrushes.Black, new XPoint(50, 90));
+        gfx.DrawString("User Receive (Receiving OP): 130585", contentFont, XBrushes.Black, new XPoint(350, 90));
+
+        gfx.DrawString("Ca lam viec (Shift): D", contentFont, XBrushes.Black, new XPoint(50, 110));
+
+        // Vẽ phần "Loại vấn đề"
+        gfx.DrawString("Loai van de (Circle number):", headerFont, XBrushes.Black, new XPoint(50, 140));
+        gfx.DrawString("1. Van de lien quan toi DS (DS Problem)", contentFont, XBrushes.Black, new XPoint(60, 160));
+        gfx.DrawString("=> Fill ①②③④⑤ and attach SUPPLIER'S CARGO", contentFont, XBrushes.Black, new XPoint(80, 175));
+        gfx.DrawString("2. Sai khac so luong (Diff quantity apply for supplier delivery cargo by invoice)", contentFont, XBrushes.Black, new XPoint(60, 190));
+        gfx.DrawString("=> Fill ①②③④⑤⑥ and attach INVOICE NO/DELIVERY SLIP", contentFont, XBrushes.Black, new XPoint(80, 205));
+
+        // Vẽ phần "Chi tiết"
+        gfx.DrawString("Chi tiet (Detail Information)", headerFont, XBrushes.Black, new XPoint(50, 230));
+
+        gfx.DrawString("① Nha cung cap (Supplier Name): V143", contentFont, XBrushes.Black, new XPoint(50, 250));
+        gfx.DrawString("② So Invoice (Invoice no):", contentFont, XBrushes.Black, new XPoint(50, 270));
+        gfx.DrawRectangle(XPens.Black, new XRect(180, 265, 100, 20)); // Ô nhập Invoice
+
+        gfx.DrawString("③ Ma linh kien (Part No):", contentFont, XBrushes.Black, new XPoint(50, 290));
+        gfx.DrawString("QC7-9486-000", contentFont, XBrushes.Black, new XPoint(200, 290));
+        gfx.DrawString("QC7-9487-000", contentFont, XBrushes.Black, new XPoint(300, 290));
+        gfx.DrawString("QC7-9488-000", contentFont, XBrushes.Black, new XPoint(400, 290));
+
+        // Vẽ bảng số lượng
+        gfx.DrawString("④ So luong (Delivery order)", contentFont, XBrushes.Black, new XPoint(50, 310));
+        gfx.DrawString("Ke hoach (Plan)", contentFont, XBrushes.Black, new XPoint(200, 310));
+        gfx.DrawString("Thuc nhan (Actual)", contentFont, XBrushes.Black, new XPoint(300, 310));
+
+        gfx.DrawString("0", contentFont, XBrushes.Black, new XPoint(210, 330));
+        gfx.DrawString("710", contentFont, XBrushes.Black, new XPoint(310, 330));
+
+        gfx.DrawString("0", contentFont, XBrushes.Black, new XPoint(210, 350));
+        gfx.DrawString("700", contentFont, XBrushes.Black, new XPoint(310, 350));
+
+        gfx.DrawString("0", contentFont, XBrushes.Black, new XPoint(210, 370));
+        gfx.DrawString("680", contentFont, XBrushes.Black, new XPoint(310, 370));
+
+        // Vẽ trạng thái DS
+        gfx.DrawString("⑤ Tinh trang DS (DS status)", contentFont, XBrushes.Black, new XPoint(50, 400));
+        gfx.DrawString("Khong DS (No DS)", contentFont, XBrushes.Black, new XPoint(200, 400));
+
+        // Vẽ thời gian
+        gfx.DrawString("⑥ Thoi gian (Delivery time): 110500", contentFont, XBrushes.Black, new XPoint(50, 420));
+
+        // Vẽ số quản lý
+        gfx.DrawString("⑦ So quan ly (Control number):", contentFont, XBrushes.Black, new XPoint(50, 440));
+        gfx.DrawString("RP-MAR-46", contentFont, XBrushes.Black, new XPoint(200, 440));
+        gfx.DrawString("RP-MAR-47", contentFont, XBrushes.Black, new XPoint(300, 440));
+        gfx.DrawString("RP-MAR-48", contentFont, XBrushes.Black, new XPoint(400, 440));
+
+        // Lưu file PDF
+        string filePath = "Receiving_Problem_Report.pdf";
+        document.Save(filePath);
+        document.Close();
+
+        Console.WriteLine($"File PDF đã được tạo: {Path.GetFullPath(filePath)}");
+    }
+}
 public async Task ExecuteProcInsertPicProblemAsync()
 {
     using var transaction = await _dbContext.Database.BeginTransactionAsync();
