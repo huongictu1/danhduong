@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shipping Form</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+        .container {
+            width: 90%;
+            margin: auto;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+        }
+        th, td {
+            border: 1px solid black;
+            padding: 8px;
+            text-align: center;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+        .header-table {
+            width: 100%;
+            margin-bottom: 10px;
+        }
+        .header-table td {
+            border: 1px solid black;
+            padding: 8px;
+            text-align: center;
+            font-weight: bold;
+        }
+        .signatures {
+            margin-top: 20px;
+            text-align: center;
+        }
+        .signatures div {
+            display: inline-block;
+            width: 30%;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2 style="text-align: center;">Shipping Form For Cargoes</h2>
+        <h4 style="text-align: center;">(Biên bản xuất hàng hóa)</h4>
+
+        <table class="header-table">
+            <tr>
+                <td>Date (Ngày)</td>
+                <td>20250401</td>
+                <td>Lot No (Lot số)</td>
+                <td></td>
+                <td>ETD TS</td>
+                <td>0950</td>
+                <td>Location</td>
+                <td>TS01</td>
+                <td>ETA Vendor</td>
+            </tr>
+        </table>
+
+        <table>
+            <tr>
+                <th>No (STT)</th>
+                <th>Producer (Phòng sản xuất)</th>
+                <th>Part No</th>
+                <th>Part Name</th>
+                <th>Shikyu Vendor</th>
+                <th>Plan Shipping (Kế hoạch xuất)</th>
+                <th>Actual Shipping (Thực tế xuất)</th>
+                <th>Actual Receive (Thực tế nhận)</th>
+                <th>Delivery Key (Barcode)</th>
+                <th colspan="3">Shipping</th>
+                <th colspan="3">Receive</th>
+                <th>Note (Ghi chú)</th>
+            </tr>
+            <tr>
+                <th colspan="9"></th>
+                <th>Box Qty</th>
+                <th>Wood len</th>
+                <th>Cart</th>
+                <th>Plastic</th>
+                <th>Box Qty</th>
+                <th>Wood len</th>
+                <th>Cart</th>
+                <th>Plastic</th>
+                <th></th>
+            </tr>
+            <tr>
+                <td>1</td>
+                <td></td>
+                <td>FM2-P123-000</td>
+                <td></td>
+                <td>984G</td>
+                <td>1</td>
+                <td></td>
+                <td></td>
+                <td>*NGRT-V0311128*</br><img src="barcode_placeholder.png" alt="Barcode" width="100"></td>
+                <td colspan="4"></td>
+                <td colspan="4"></td>
+                <td></td>
+            </tr>
+            <tr>
+                <td>1</td>
+                <td></td>
+                <td>FM2-P123-000</td>
+                <td></td>
+                <td>984G</td>
+                <td>1</td>
+                <td></td>
+                <td></td>
+                <td>*NGRT-V0311282*</br><img src="barcode_placeholder.png" alt="Barcode" width="100"></td>
+                <td colspan="4"></td>
+                <td colspan="4"></td>
+                <td></td>
+            </tr>
+            <tr>
+                <td colspan="5" style="text-align: right;"><b>Total</b></td>
+                <td><b>2</b></td>
+                <td colspan="10"></td>
+            </tr>
+        </table>
+
+        <table class="header-table">
+            <tr>
+                <td>Date</td>
+                <td colspan="6"></td>
+            </tr>
+            <tr>
+                <td>PL</td>
+                <td colspan="6"></td>
+            </tr>
+        </table>
+
+        <div class="signatures">
+            <div>Shipper <br>(Người giao hàng)</div>
+            <div>Forwarder <br>(Người vận chuyển)</div>
+            <div>Receiver <br>(Người nhận hàng)</div>
+        </div>
+    </div>
+</body>
+</html>
