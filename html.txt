@@ -1,3 +1,187 @@
+
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Receiving Problem Report</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            font-size: 14px;
+            margin: 20px;
+        }
+        .container {
+            width: 80%;
+            margin: auto;
+        }
+        h2, h3 {
+            text-align: center;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 10px;
+        }
+        td, th {
+            border: 1px solid black;
+            padding: 5px;
+            text-align: left;
+        }
+        .no-border {
+            border: none;
+        }
+        .input-box {
+            display: inline-block;
+            width: 98%;
+            height: 20px;
+            border: 1px solid black;
+            margin-top: 5px;
+        }
+        .flex-container {
+            display: flex;
+            justify-content: space-between;
+        }
+        .flex-item {
+            width: 48%;
+        }
+        .checkbox-container {
+            display: flex;
+            align-items: center;
+        }
+        .checkbox-container input {
+            margin-right: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>BAO CAO VAN DE NHAN HANG</h2>
+        <h3>RECEIVING PROBLEM REPORT</h3>
+
+        <table>
+            <tr>
+                <td><b>Date Delivery (Received date):</b> 20250326</td>
+                <td><b>User Receive (Receiving OP):</b> 130585</td>
+            </tr>
+            <tr>
+                <td><b>Ca làm việc (Shift):</b> D</td>
+            </tr>
+        </table>
+
+        <p><b>Loại vấn đề (Circle number):</b></p>
+        <p>1. Vấn đề liên quan tới DS (DS Problem)</p>
+        <p>&emsp;=> Fill ① ② ③ ④ ⑤ ⑥ and attach SUPPLIER'S CARGO</p>
+        <p>2. Sai khác số lượng (Diff quantity apply for supplier delivery cargo by invoice)</p>
+        <p>&emsp;=> Fill ① ② ③ ④ ⑤ ⑥ and attach INVOICE NO/DELIVERY SLIP</p>
+
+        <h3>Chi tiết (Detail Information)</h3>
+
+        <table>
+            <tr>
+                <td width="30%">① Nhà cung cấp (Supplier Name):</td>
+                <td colspan="3"><div class="input-box">V143</div></td>
+            </tr>
+            <tr>
+                <td>② Số Invoice (Invoice no):</td>
+                <td><div class="input-box">QC7-9486-000</div></td>
+                <td><div class="input-box">QC7-9487-000</div></td>
+                <td><div class="input-box">QC7-9488-000</div></td>
+            </tr>
+            <tr>
+                <td>③ Mã linh kiện (Part No):</td>
+                <td><div class="input-box"></div></td>
+                <td><div class="input-box"></div></td>
+                <td><div class="input-box"></div></td>
+            </tr>
+            <tr>
+                <td>④ Số lượng (Delivery order):</td>
+                <td>Kế hoạch (Plan): 0<br>Thực nhận (Actual): 710</td>
+                <td>Kế hoạch (Plan): 0<br>Thực nhận (Actual): 700</td>
+                <td>Kế hoạch (Plan): 0<br>Thực nhận (Actual): 680</td>
+            </tr>
+            <tr>
+                <td>⑤ Tình trạng DS (DS status):</td>
+                <td>Không DS (No DS)</td>
+                <td>Không DS (No DS)</td>
+                <td>Không DS (No DS)</td>
+            </tr>
+            <tr>
+                <td>⑥ Thời gian (Delivery time):</td>
+                <td>110500</td>
+                <td>110500</td>
+                <td>110500</td>
+            </tr>
+            <tr>
+                <td>⑦ Số quản lý (Control number):</td>
+                <td>RP-MAR-46</td>
+                <td>RP-MAR-47</td>
+                <td>RP-MAR-48</td>
+            </tr>
+        </table>
+
+        <h3>PDC điền lý do (PDC input reason)</h3>
+        <div class="input-box"></div>
+        <h3>Giai pháp của PDC1 (PDC1's countermeasure):</h3>
+        <div class="input-box"></div>
+
+        <div class="checkbox-container">
+            <input type="checkbox"> Đã làm (Uploaded)
+            <input type="checkbox"> Chưa làm (Not Yet)
+        </div>
+
+        <p>PIC: <span class="input-box"></span> PDC1 AMG UP:</p>
+
+        <h3>PUR điền lý do (PUR input reason):</h3>
+        <div class="input-box"></div>
+        <h3>Giai pháp của PUR (PUR's countermeasure):</h3>
+        <div class="input-box"></div>
+
+        <p>PUR PIC: <span class="input-box"></span> PUR AMG UP:</p>
+
+        <h3>*REC LD điền thông tin vào khu vực này:</h3>
+        <p>Tên Buyer: <span class="input-box"></span> Ngày báo cáo: <span class="input-box"></span></p>
+
+        <h3>*Quản lý DS trả lại (PDC1/PUR/REC điền thông tin)</h3>
+        <table>
+            <tr>
+                <th>No.</th>
+                <th>Ngày/giờ trả</th>
+                <th>Số lượng DS</th>
+                <th>PDC1/PUR/LOG</th>
+                <th>REC xác nhận</th>
+            </tr>
+            <tr>
+                <td>1</td>
+                <td><div class="input-box"></div></td>
+                <td><div class="input-box"></div></td>
+                <td><div class="input-box"></div></td>
+                <td><div class="input-box"></div></td>
+            </tr>
+            <tr>
+                <td>2</td>
+                <td><div class="input-box"></div></td>
+                <td><div class="input-box"></div></td>
+                <td><div class="input-box"></div></td>
+                <td><div class="input-box"></div></td>
+            </tr>
+            <tr>
+                <td>3</td>
+                <td><div class="input-box"></div></td>
+                <td><div class="input-box"></div></td>
+                <td><div class="input-box"></div></td>
+                <td><div class="input-box"></div></td>
+            </tr>
+        </table>
+
+        <p>*Kết quả check REC LD check <span class="input-box"></span> Date <span class="input-box"></span></p>
+    </div>
+</body>
+</html>
+
+
+
+
 <!DOCTYPE html>
 <html lang="vi">
 <head>
