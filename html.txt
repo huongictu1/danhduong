@@ -1,5 +1,194 @@
 
 <!DOCTYPE html>
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Receiving Problem Report</title>
+    <style>
+        body {
+            font-family: "Times New Roman", Times, serif;
+            font-size: 14px;
+            margin: 20px;
+        }
+        .container {
+            width: 80%;
+            margin: auto;
+        }
+        h2, h3 {
+            text-align: center;
+            margin-bottom: 5px;
+        }
+        h3 {
+            font-size: 16px;
+        }
+        .section-title {
+            font-weight: bold;
+            text-align: left;
+            margin: 10px 0 5px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 10px;
+        }
+        td, th {
+            padding: 5px;
+            text-align: left;
+        }
+        .border td, .border th {
+            border: 1px solid black;
+        }
+        .no-border {
+            border: none;
+        }
+        .input-box {
+            display: inline-block;
+            width: 98%;
+            height: 20px;
+            border-bottom: 1px solid black;
+            margin-top: 3px;
+        }
+        .flex-container {
+            display: flex;
+            justify-content: space-between;
+        }
+        .flex-item {
+            width: 48%;
+        }
+        .checkbox-container {
+            display: flex;
+            align-items: center;
+        }
+        .checkbox-container input {
+            margin-right: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>BAO CAO VAN DE NHAN HANG</h2>
+        <h3>RECEIVING PROBLEM REPORT</h3>
+
+        <table>
+            <tr>
+                <td><b>Date Delivery (Received date):</b> 20250326</td>
+                <td><b>User Receive (Receiving OP):</b> 130585</td>
+            </tr>
+            <tr>
+                <td><b>Ca làm việc (Shift):</b> D</td>
+            </tr>
+        </table>
+
+        <p class="section-title">Loại vấn đề (Circle number):</p>
+        <p>1. Vấn đề liên quan tới DS (DS Problem)</p>
+        <p>&emsp;=> Fill ① ② ③ ④ ⑤ ⑥ and attach SUPPLIER'S CARGO</p>
+        <p>2. Sai khác số lượng (Diff quantity apply for supplier delivery cargo by invoice)</p>
+        <p>&emsp;=> Fill ① ② ③ ④ ⑤ ⑥ and attach INVOICE NO/DELIVERY SLIP</p>
+
+        <p class="section-title">Chi tiết (Detail Information)</p>
+
+        <table class="border">
+            <tr>
+                <td width="30%"><b>① Nhà cung cấp (Supplier Name):</b></td>
+                <td colspan="3"><div class="input-box">V143</div></td>
+            </tr>
+            <tr>
+                <td><b>② Số Invoice (Invoice no):</b></td>
+                <td><div class="input-box">QC7-9486-000</div></td>
+                <td><div class="input-box">QC7-9487-000</div></td>
+                <td><div class="input-box">QC7-9488-000</div></td>
+            </tr>
+            <tr>
+                <td><b>③ Mã linh kiện (Part No):</b></td>
+                <td colspan="3"><div class="input-box"></div></td>
+            </tr>
+        </table>
+
+        <div class="flex-container">
+            <div class="flex-item">
+                <table class="border">
+                    <tr>
+                        <td><b>④ Số lượng (Delivery order):</b></td>
+                        <td><b>Kế hoạch (Plan)</b>: 0</td>
+                        <td><b>Thực nhận (Actual)</b>: 710</td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td><b>Kế hoạch (Plan)</b>: 0</td>
+                        <td><b>Thực nhận (Actual)</b>: 700</td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td><b>Kế hoạch (Plan)</b>: 0</td>
+                        <td><b>Thực nhận (Actual)</b>: 680</td>
+                    </tr>
+                </table>
+            </div>
+
+            <div class="flex-item">
+                <table class="border">
+                    <tr>
+                        <td><b>⑤ Tình trạng DS (DS status):</b> Không DS (No DS)</td>
+                    </tr>
+                    <tr>
+                        <td><b>⑥ Thời gian (Delivery time):</b> 110500</td>
+                    </tr>
+                    <tr>
+                        <td><b>⑦ Số quản lý (Control number):</b> RP-MAR-46</td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+
+        <p class="section-title">PDC điền lý do (PDC input reason)</p>
+        <div class="input-box"></div>
+
+        <p class="section-title">Giai pháp của PDC1 (PDC1's countermeasure):</p>
+        <div class="input-box"></div>
+
+        <div class="checkbox-container">
+            <input type="checkbox"> Đã làm (Uploaded)
+            <input type="checkbox"> Chưa làm (Not Yet)
+        </div>
+
+        <p>PIC: <span class="input-box"></span> PDC1 AMG UP:</p>
+
+        <p class="section-title">PUR điền lý do (PUR input reason):</p>
+        <div class="input-box"></div>
+
+        <p class="section-title">Giai pháp của PUR (PUR's countermeasure):</p>
+        <div class="input-box"></div>
+
+        <p>PUR PIC: <span class="input-box"></span> PUR AMG UP:</p>
+
+        <p class="section-title">*REC LD điền thông tin vào khu vực này:</p>
+        <p>Tên Buyer: <span class="input-box"></span> Ngày báo cáo: <span class="input-box"></span></p>
+
+        <p class="section-title">*Quản lý DS trả lại (PDC1/PUR/REC điền thông tin)</p>
+        <table class="border">
+            <tr>
+                <th>No.</th>
+                <th>Ngày/giờ trả</th>
+                <th>Số lượng DS</th>
+                <th>PDC1/PUR/LOG</th>
+                <th>REC xác nhận</th>
+            </tr>
+            <tr>
+                <td>1</td>
+                <td><div class="input-box"></div></td>
+                <td><div class="input-box"></div></td>
+                <td><div class="input-box"></div></td>
+                <td><div class="input-box"></div></td>
+            </tr>
+        </table>
+
+        <p>*Kết quả check REC LD check <span class="input-box"></span> Date <span class="input-box"></span></p>
+    </div>
+</body>
+</html>
+
 <html lang="vi">
 <head>
     <meta charset="UTF-8">
