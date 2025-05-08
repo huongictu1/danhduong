@@ -1,0 +1,30 @@
+Xin chào, I'm Hưởng.
+On behalf of IT division and the trainers, I would like to report internship program today.
+
+My report consists of three parts. The first general overview, the second result of training. Finally I will review result of actual project.
+
+Now let's start with part one. This program, we have 5 internship members belong to 3 kind of jobs: 1 mem system engineer, 2 mem software engineer and 2 mem of AI team. 
+
+Our team consists of 8 trainers, we represent 3 key teams: infrastructure, application and smart factory.
+
+following 1 month training program, out training program include 5 key categories that covered the majority of IT fields, we had two week for completing homework and one month to join actual project.
+
+the next part, I would like to show result of training activity.
+after the training period, we are pleased to report significant improvements and positive outcomes among all internship members. 
+All trainees have demonstrated strong qualities such as: hard-working attitude, effective self-study skills, excellent teamwork, good communication, creative.
+100% of trainees successfully completed all assigned homework.
+More impressively, during the internship phase, they were able to independently develop small scale web application by apply knowledge and skills they had acquired.
+This reflect not only their technical capability but also their initiative, problem-solving mindset, and team collaboration.
+
+we also collected evaluations from all trainers, and all intern received high score, with over 70% in all assessments.
+
+the next part, I would like to report the result of actual project.
+all members completed 100% job assignment.
+about system engineer, he join 4 key job for check end of support software, check unsafety software, config switches and support PC inventory. beside that, he also make video for minigame CANON recruitment similar, and support 1 laptop for Japanese GM in QV factory.
+with software engineer, they successfully make 3 RPA for Fixed Asset Control. Completed 10 function when remake NPIS EUC from Macro to Web. Completed 3 web interface of Single Sign On system.
+and finally 2 mem join object detection project of MTD department. As result, propose 5 alternative models for the current with time reduce 10% and complete baseline for AI experiments.
+
+with their strong efforts and growth, we would like to say: welcome to CVN IT staff"
+
+That's all about my report, thanks for your listening.
+
