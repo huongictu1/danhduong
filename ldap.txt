@@ -1,0 +1,91 @@
+public string GetNearestDomainController()
+    {
+        string nearestDomainController = null;
+
+        using (Domain computerDomain = Domain.GetComputerDomain())
+        using (DomainController currentDomainController = computerDomain.FindDomainController())
+        {
+            nearestDomainController = currentDomainController.Name;
+        }
+        return nearestDomainController;
+    }
+public Boolean CheckExits(string User, string Passwords)
+    {
+        fullName = "";
+        Boolean check = false;
+        var strController = GetNearestDomainController();
+        try
+        {
+            DirectoryEntry directionEntry = new DirectoryEntry("LDAP://" + strController, User, Passwords);
+            if (directionEntry != null)
+            {
+                DirectorySearcher search = new DirectorySearcher(directionEntry);
+                search.Filter = "(SAMAccountName=" + User + ")";
+                SearchResult result = search.FindOne();
+
+                if (result != null)
+                {
+                    fullName = result.Properties["displayname"][0].ToString();
+                    check = true;
+
+                }
+                else
+                {
+                    Session["lock"] = "6";
+                }
+            }
+
+
+        }
+        catch (DirectoryServicesCOMException exc)
+        {
+            Session["lock"] = "0";
+            check = false;
+            if ((uint)exc.ExtendedError == 0x8009030C)
+            {
+                LDAPErrors errCode = 0;
+                try
+                {
+                    if (!string.IsNullOrEmpty(exc.ExtendedErrorMessage))
+                    {
+                        Match match = Regex.Match(exc.ExtendedErrorMessage, @" data (?<errCode>[0-9A-Fa-f]+),");
+                        if (match.Success)
+                        {
+                            string errCodeHexs = match.Groups["errCode"].Value;
+                            int number = Convert.ToInt32(errCodeHexs, 16);
+                            errCode = (LDAPErrors)number;
+                        }
+                    }
+                }
+                catch { }
+
+                switch (errCode)
+                {
+                    case LDAPErrors.ERROR_PASSWORD_MUST_CHANGE: //PC account has been expired
+                        Session["lock"] = "1";
+                        break;
+                    case LDAPErrors.ERROR_ACCOUNT_LOCKED_OUT: //PC account has been locked
+                        Session["lock"] = "2";
+                        break;
+                    case LDAPErrors.ERROR_PASSWORD_EXPIRED: //Your password has been expired
+                        Session["lock"] = "3";
+                        break;
+                    case LDAPErrors.ERROR_LOGON_FAILURE: //Incorrect PC account or password
+                        Session["lock"] = "4";
+                        break;
+                    case LDAPErrors.ERROR_INVALID_WORKSTATION: //user not allow to log on to this computer
+                        Session["lock"] = "7";
+                        break;
+                    default:
+                        Session["lock"] = "5";
+                        throw new Exception(exc.Message + strController);
+                }
+            }
+            else
+            {
+                throw new Exception(exc.Message + strController);
+            }
+
+        }
+        return check;
+    }
